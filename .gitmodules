@@ -1,0 +1,3 @@
+[submodule "apps/vite-project"]
+	path = apps/vite-project
+	url = https://gitee.com/Manshawar/vue3baseproject.git

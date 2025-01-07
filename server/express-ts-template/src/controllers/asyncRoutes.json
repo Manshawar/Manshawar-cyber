@@ -1,0 +1,109 @@
+[
+  {
+    "path": "/multi",
+    "name": "multi",
+    "meta": {
+      "title": "多级菜单",
+      "icon": "Menu"
+    },
+    "component": "Layout",
+    "children": [
+      {
+        "path": "a",
+        "name": "a",
+        "meta": {
+          "title": "多级菜单A",
+          "icon": "Menu"
+        },
+        "children": [
+          {
+            "path": "aa",
+            "name": "aa",
+            "meta": {
+              "title": "多级菜单AA",
+              "icon": "Tickets"
+            },
+            "children": [
+              {
+                "path": "aaa",
+                "name": "aaa",
+                "meta": {
+                  "title": "多级菜单A",
+                  "role": "admin"
+                },
+                "component": "/src/views/multi/a.vue"
+              },
+              {
+                "path": "bbb",
+                "name": "bbb",
+                "meta": {
+                  "title": "多级菜单B",
+                  "role": "customer"
+                },
+                "component": "/src/views/multi/b.vue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "b",
+        "name": "b",
+        "meta": {
+          "title": "多级菜单B",
+          "icon": "SetUp"
+        },
+        "component": "/src/views/multi/b.vue"
+      }
+    ]
+  },
+  {
+    "path": "/dashboard",
+    "name": "dashboard",
+    "component": "Layout",
+    "meta": {
+      "title": "dashboard",
+      "icon": "Folder"
+    },
+    "children": [
+      {
+        "path": "/dashboard/index",
+        "name": "index",
+        "meta": {
+          "title": "dashboard-Index",
+          "icon": "Platform"
+        },
+        "component": "/src/views/index.vue"
+      },
+      {
+        "path": "/dashboard/test",
+        "name": "test",
+        "meta": {
+          "title": "dashboard-test",
+          "icon": "Sugar"
+        },
+        "component": "/src/views/test.vue"
+      }
+    ]
+  },
+  {
+    "path": "/try",
+    "name": "try",
+    "component": "Layout",
+    "meta": {
+      "title": "try",
+      "icon": "Memo"
+    },
+    "children": [
+      {
+        "path": "/try/upload",
+        "name": "upload",
+        "meta": {
+          "title": "try-upload",
+          "icon": "Upload"
+        },
+        "component": "/src/views/upload/index.vue"
+      }
+    ]
+  }
+]
