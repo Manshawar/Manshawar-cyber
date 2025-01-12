@@ -1,0 +1,31 @@
+$color: #002329; // 定义颜色变量
+
+$alpha: 0.2;
+.topMenu {
+  background: rgba($color, $alpha);
+}
+.titlebar {
+  height: 30px;
+  background: transparent;
+  user-select: none;
+  display: flex;
+  justify-content: flex-end;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba($color, $alpha);
+}
+.titlebar-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  user-select: none;
+  -webkit-user-select: none;
+  color: white;
+}
+.titlebar-button:hover {
+  background: rgba($color, 1);
+}

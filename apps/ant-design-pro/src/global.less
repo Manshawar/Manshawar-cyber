@@ -7,8 +7,23 @@ body,
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
+  .ant-pro-card,
+  .ant-card,
+  .ant-card-body {
+    // backdrop-filter: blur(8px) !important;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .my-prefix-sider-collapsed-button {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .ant-menu-item .anticon {
+    font-size: 1.2rem;
+  }
 }
-
+.my-prefix-sider-menu {
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+}
 .colorWeak {
   filter: invert(80%);
 }
@@ -16,8 +31,9 @@ body,
 .ant-layout {
   min-height: 100vh;
 }
-.ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
-  left: unset;
+.my-prefix-layout-bg-list {
+  background: transparent !important;
+  z-index: -111;
 }
 
 canvas {

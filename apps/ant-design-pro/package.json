@@ -32,7 +32,9 @@
     "test:coverage": "npm run jest -- --coverage",
     "test:update": "npm run jest -- -u",
     "tsc": "tsc --noEmit",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "ant:dev": "npm run start",
+    "ant:t": "npm run tauri dev"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
@@ -48,11 +50,15 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
     "@ant-design/pro-components": "^2.6.48",
+    "@emotion/css": "11.13.5",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-fs": "~2",
     "@umijs/preset-umi": "4.4.4",
     "@umijs/route-utils": "^2.2.2",
     "antd": "^5.13.2",
     "antd-style": "^3.6.1",
     "classnames": "^2.5.1",
+    "imagekitio-react": "4.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "omit.js": "^2.0.2",
@@ -89,6 +95,7 @@
     "prettier": "^2.8.8",
     "react-dev-inspector": "^1.9.0",
     "swagger-ui-dist": "^4.19.1",
+    "tailwindcss": "^3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "umi-presets-pro": "^2.0.3",

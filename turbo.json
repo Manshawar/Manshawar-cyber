@@ -20,6 +20,9 @@
     },
     "dev:try": {
       "cache": false
+    },
+    "ant:t": {
+      "cache": false
     }
   }
 }
