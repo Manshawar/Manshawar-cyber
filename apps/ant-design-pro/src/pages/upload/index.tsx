@@ -22,7 +22,7 @@ const Index: React.FC = () => {
     listen('download-started', (event) => {
       console.log('download-started started:', event);
     });
-    invoke('download')
+    invoke('test')
       .then((res) => console.log('res', res))
       .catch((e) => console.error(e));
   }, []);

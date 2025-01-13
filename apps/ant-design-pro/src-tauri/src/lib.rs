@@ -1,4 +1,6 @@
-use tauri::{AppHandle, Emitter};
+mod invoke_handler;
+use crate::invoke_handler::index::test;
+use tauri::{generate_context, AppHandle, Emitter};
 #[tauri::command]
 fn download(app: AppHandle) {
     // 发送下载开始事件
@@ -12,7 +14,7 @@ fn download(app: AppHandle) {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
-        .invoke_handler(tauri::generate_handler![download])
+        .invoke_handler(tauri::generate_handler![test])
         .setup(|app| {
             if cfg!(debug_assertions) {
                 println!("Running in debug mode");
