@@ -1,11 +1,9 @@
-use imagekit::delete::Delete;
-use imagekit::upload::types::FileType;
 use imagekit::upload::{Options, Upload, UploadFile};
 use imagekit::ImageKit;
+use std::env;
 use tauri::{generate_context, App, AppHandle, Emitter};
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
-
 #[tauri::command]
 pub fn test(msg: Vec<u8>) -> String {
     if let Ok(value) = get_image(msg) {
@@ -16,16 +14,17 @@ pub fn test(msg: Vec<u8>) -> String {
 }
 #[tokio::main]
 async fn get_image(msg: Vec<u8>) -> Result<String, std::io::Error> {
-    let temp_file_path = "temp_image.png";
+    let temp_dir = env::temp_dir();
+    let temp_file_path = temp_dir.join("temp_image.png");
 
     // 写入文件
     {
-        let mut file = File::create(&temp_file_path).await?;
+        let mut file = tokio::fs::File::create(&temp_file_path).await?;
         file.write_all(&msg).await?;
     } // 文件在这里自动关闭
 
     // 打开临时文件
-    let file = File::open(&temp_file_path).await?;
+    let file = tokio::fs::File::open(&temp_file_path).await?;
 
     // 初始化 ImageKit
     let image_kit = ImageKit::new(
@@ -40,12 +39,11 @@ async fn get_image(msg: Vec<u8>) -> Result<String, std::io::Error> {
         std::io::Error::new(std::io::ErrorKind::Other, format!("Upload failed: {}", e))
     })?;
 
-    // 删除临时文件
-    tokio::fs::remove_file(&temp_file_path).await?;
+    // 不删除临时文件，让操作系统自动清理
+    // tokio::fs::remove_file(&temp_file_path).await?;
 
     // 返回上传结果的 URL
     Ok(upload_result.url)
-    // 2. 打开临时文件
     // let file = File::open(temp_file_path).await.map_err(|e| e.to_string());
 
     // let mut image_kit = ImageKit::new(

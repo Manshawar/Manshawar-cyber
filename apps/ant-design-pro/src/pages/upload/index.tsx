@@ -1,9 +1,9 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
-import { Card, theme, message, Upload, Button, Table } from 'antd';
+import { Card, theme, message, Upload, Image, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
+import type { UploadProps, TableColumnsType } from 'antd';
 import { IKContext, IKUpload, IKImage } from 'imagekitio-react';
 import { listen } from '@tauri-apps/api/event';
 import { invoke } from '@tauri-apps/api/core';
@@ -39,11 +39,12 @@ const Index: React.FC = () => {
       console.log('Dropped files', e.dataTransfer.files);
     },
   };
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
   const [imageBase, setImageBase] = useState<Uint8Array<ArrayBuffer>>();
   const publicKey = 'public_f0lEErwJhjlt4SJMaHwZjt0aJ+U=';
   const urlEndpoint = 'https://ik.imagekit.io/Manshawar';
   const [imageUrl, setImageUrl] = useState<string>('');
-  const [ImgUrl, setImgUrl] = useState<string>('');
+
   async function getPic(event: any) {
     // console.log(event);
     if (event.ctrlKey && event.key === 'v') {
@@ -60,56 +61,74 @@ const Index: React.FC = () => {
           const url = URL.createObjectURL(blob);
           setImageUrl(url);
           console.log('剪切板中的图片已保存为 PNG 文件');
+          to_upload(uint8Array);
         } else {
           console.log('剪切板中没有图片内容');
         }
       }
     }
   }
-  const to_upload = async () => {
-    if (imageBase) {
-      invoke('test', { msg: imageBase }).then((res) => {
-        console.log(res);
+  const to_upload = async (uint8Array: any) => {
+    if (uint8Array) {
+      invoke('test', { msg: uint8Array }).then((res) => {
+        setDataSource([...dataSource, { address: res as string, key: res as string }]);
+        setImageUrl('');
       });
     }
   };
-  const dataSource = [
-    {
-      address: 'https://ik.imagekit.io/Manshawar/ferris_xPhjYShpx?updatedAt=1736846010347',
-    },
-  ];
-  const columns = [
+
+  interface DataType {
+    address: string;
+    key: React.Key;
+  }
+
+  const columns: TableColumnsType<DataType> = [
     {
       title: '图片',
       dataIndex: 'address',
       key: 'address',
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-      key: 'address',
+      align: 'center',
+      render: (value, record, index) => {
+        return (
+          <div
+            style={{ width: '100%' }}
+            onClick={() => {
+              navigator.clipboard.writeText(value);
+            }}
+          >
+            <Image
+              width={200}
+              src={value}
+              placeholder={<Image preview={false} src="/bg/LonelyCAT.png" width={200} />}
+            />
+          </div>
+        );
+      },
     },
   ];
   return (
-    <PageContainer header={{ breadcrumb: {}, title: '' }}>
-      <Card
-        style={{
-          borderRadius: 8,
-          minHeight: '70vh',
-        }}
-      >
-        <div tabIndex={0} onKeyDown={getPic} style={{ width: '100%', height: '500px' }}>
-          <h2>剪切板中的图片：</h2>
-          {imageUrl && (
-            <img src={imageUrl} alt="剪切板图片" style={{ maxWidth: '100%', height: 'auto' }} />
-          )}
-          <Button type="primary" onClick={to_upload}>
-            上传
-          </Button>
-          <Table dataSource={dataSource} columns={columns} />;
-        </div>
-      </Card>
-    </PageContainer>
+    <div
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        display: 'flex',
+
+        justifyContent: 'space-between',
+      }}
+    >
+      <div tabIndex={0} onKeyDown={getPic} style={{ flex: 1 }}>
+        <h2>剪切板中的图片：</h2>
+        {imageUrl && (
+          <img src={imageUrl} alt="剪切板图片" style={{ maxWidth: '100%', height: 'auto' }} />
+        )}
+      </div>
+      <Table
+        pagination={false}
+        dataSource={dataSource}
+        columns={columns}
+        scroll={{ x: 'max-content', y: '300px' }}
+      ></Table>
+    </div>
   );
 };
 

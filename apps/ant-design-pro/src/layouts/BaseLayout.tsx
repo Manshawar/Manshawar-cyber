@@ -166,11 +166,15 @@ export default (props: any) => {
               header={{ breadcrumb: {}, title: '' }}
             >
               <ProCard
-                style={{
-                  flex: 1,
+                bodyStyle={{
+                  minHeight: '70vh',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
-                {props.children}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: 0 }}>
+                  {props.children}
+                </div>
               </ProCard>
             </PageContainer>
           </ProLayout>
