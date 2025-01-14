@@ -1,14 +1,6 @@
 mod invoke_handler;
-use crate::invoke_handler::index::test;
+use crate::invoke_handler::imagekit::test;
 use tauri::{generate_context, AppHandle, Emitter};
-#[tauri::command]
-fn download(app: AppHandle) {
-    // 发送下载开始事件
-    println!("download started");
-    app.emit("download-started", "haha").unwrap();
-
-    // 模拟下载进度
-}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

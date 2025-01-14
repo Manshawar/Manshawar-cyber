@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
-import { Card, theme, message, Upload } from 'antd';
+import { Card, theme, message, Upload, Button, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
@@ -17,15 +17,9 @@ const Index: React.FC = () => {
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
   const { defaultStyle } = useModel('theme');
+
   const { Dragger } = Upload;
-  useEffect(() => {
-    listen('download-started', (event) => {
-      console.log('download-started started:', event);
-    });
-    invoke('test')
-      .then((res) => console.log('res', res))
-      .catch((e) => console.error(e));
-  }, []);
+
   const props: UploadProps = {
     name: 'file',
     multiple: true,
@@ -45,10 +39,11 @@ const Index: React.FC = () => {
       console.log('Dropped files', e.dataTransfer.files);
     },
   };
-
+  const [imageBase, setImageBase] = useState<Uint8Array<ArrayBuffer>>();
   const publicKey = 'public_f0lEErwJhjlt4SJMaHwZjt0aJ+U=';
   const urlEndpoint = 'https://ik.imagekit.io/Manshawar';
   const [imageUrl, setImageUrl] = useState<string>('');
+  const [ImgUrl, setImgUrl] = useState<string>('');
   async function getPic(event: any) {
     // console.log(event);
     if (event.ctrlKey && event.key === 'v') {
@@ -59,6 +54,9 @@ const Index: React.FC = () => {
         // 检查是否有图片类型
         if (item.types.includes('image/png')) {
           const blob = await item.getType('image/png');
+          const arrayBuffer = await blob.arrayBuffer();
+          const uint8Array = new Uint8Array(arrayBuffer);
+          setImageBase(uint8Array);
           const url = URL.createObjectURL(blob);
           setImageUrl(url);
           console.log('剪切板中的图片已保存为 PNG 文件');
@@ -68,6 +66,30 @@ const Index: React.FC = () => {
       }
     }
   }
+  const to_upload = async () => {
+    if (imageBase) {
+      invoke('test', { msg: imageBase }).then((res) => {
+        console.log(res);
+      });
+    }
+  };
+  const dataSource = [
+    {
+      address: 'https://ik.imagekit.io/Manshawar/ferris_xPhjYShpx?updatedAt=1736846010347',
+    },
+  ];
+  const columns = [
+    {
+      title: '图片',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      key: 'address',
+    },
+  ];
   return (
     <PageContainer header={{ breadcrumb: {}, title: '' }}>
       <Card
@@ -76,44 +98,15 @@ const Index: React.FC = () => {
           minHeight: '70vh',
         }}
       >
-        <Dragger {...props}>
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from uploading company data or
-            other banned files.
-          </p>
-        </Dragger>
         <div tabIndex={0} onKeyDown={getPic} style={{ width: '100%', height: '500px' }}>
           <h2>剪切板中的图片：</h2>
           {imageUrl && (
             <img src={imageUrl} alt="剪切板图片" style={{ maxWidth: '100%', height: 'auto' }} />
           )}
-          {/* <IKContext
-            publicKey="public_f0lEErwJhjlt4SJMaHwZjt0aJ+U="
-            urlEndpoint="https://ik.imagekit.io/Manshawar"
-            transformationPosition="path"
-          >
-            // Image component
-            <IKImage
-              path="/default-image.jpg"
-              transformation={[
-                {
-                  height: '300',
-                  width: '400',
-                },
-              ]}
-            />
-            // Image upload
-            <IKUpload
-              fileName="my-upload"
-              onSuccess={(res) => {
-                console.log(res);
-              }}
-            />
-          </IKContext> */}
+          <Button type="primary" onClick={to_upload}>
+            上传
+          </Button>
+          <Table dataSource={dataSource} columns={columns} />;
         </div>
       </Card>
     </PageContainer>

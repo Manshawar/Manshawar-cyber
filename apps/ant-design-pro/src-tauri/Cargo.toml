@@ -24,3 +24,6 @@ log = "0.4"
 tauri = { version = "2.2.0", features = [] }
 tauri-plugin-log = "2.0.0-rc"
 tauri-plugin-fs = "2"
+imagekit = "0.1.0-beta"
+tokio = "1.43.0"
+tempfile = "3.15.0"
