@@ -40,7 +40,7 @@ const Index: React.FC = () => {
     },
   };
   const [dataSource, setDataSource] = useState<DataType[]>([]);
-  const [imageBase, setImageBase] = useState<Uint8Array<ArrayBuffer>>();
+
   const publicKey = 'public_f0lEErwJhjlt4SJMaHwZjt0aJ+U=';
   const urlEndpoint = 'https://ik.imagekit.io/Manshawar';
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -57,7 +57,6 @@ const Index: React.FC = () => {
           const blob = await item.getType('image/png');
           const arrayBuffer = await blob.arrayBuffer();
           const uint8Array = new Uint8Array(arrayBuffer);
-          setImageBase(uint8Array);
           const url = URL.createObjectURL(blob);
           setImageUrl(url);
           console.log('剪切板中的图片已保存为 PNG 文件');
@@ -72,6 +71,7 @@ const Index: React.FC = () => {
     if (uint8Array) {
       invoke('test', { msg: uint8Array }).then((res) => {
         setDataSource([...dataSource, { address: res as string, key: res as string }]);
+        navigator.clipboard.writeText(res as string);
         setImageUrl('');
       });
     }
