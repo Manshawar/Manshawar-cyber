@@ -67,7 +67,7 @@ const Index: React.FC = () => {
 
   return (
     <Splitter style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', flex: 1 }} layout="vertical">
-      <Splitter.Panel collapsible min="20%">
+      <Splitter.Panel collapsible>
         <div tabIndex={0} style={{ height: '100%' }} onKeyDown={getPic}>
           <h2 style={{ textAlign: 'center' }}>剪切板中的图片</h2>
           {imageUrl && (
