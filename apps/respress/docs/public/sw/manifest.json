@@ -1,0 +1,12 @@
+{
+  "name": "Manshawar的blog",
+  "start_url": "https://blog.yanghaoran.online/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/rspress-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
