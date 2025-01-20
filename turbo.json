@@ -21,6 +21,9 @@
     "blog": {
       "cache": false
     },
+    "blog:build": {
+      "cache": false
+    },
     "ant:t": {
       "cache": false
     }
