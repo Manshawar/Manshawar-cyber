@@ -1,33 +1,33 @@
 import styles from "styled-components";
 import React, { useState } from "react";
-import { Slider, ConfigProvider, InputNumber } from "antd";
+import { Slider, Tag, ConfigProvider, InputNumber } from "antd";
 export default () => {
   const bgColor = "rgba(2,57,62,.5)";
 
   let initmartixData = [
     [
-      { label: "", val: 1 },
-      { label: "", val: 0 },
-      { label: "", val: 0 },
-      { label: "", val: 0 },
+      { val: 1, min: 0, max: 2 },
+      { val: 0, min: -1, max: 1 },
+      { val: 0, min: -1, max: 1 },
+      { val: 0, min: -2, max: 2 },
     ],
     [
-      { label: "", val: 0 },
-      { label: "", val: 1 },
-      { label: "", val: 0 },
-      { label: "", val: 0 },
+      { val: 0, min: -1, max: 1 },
+      { val: 1, min: 0, max: 2 },
+      { val: 0, min: -1, max: 1 },
+      { val: 0, min: -2, max: 2 },
     ],
     [
-      { label: "", val: 0 },
-      { label: "", val: 0 },
-      { label: "", val: 1 },
-      { label: "", val: 0 },
+      { val: 0, min: 0, max: 2 },
+      { val: 0, min: -1, max: 1 },
+      { val: 1, min: 0, max: 2 },
+      { val: 0, min: -2, max: 2 },
     ],
     [
-      { label: "", val: 0 },
-      { label: "", val: 0 },
-      { label: "", val: 0 },
-      { label: "", val: 1 },
+      { val: 0, min: -10, max: 10 },
+      { val: 0, min: -10, max: 10 },
+      { val: 0, min: -1, max: 1 },
+      { val: 1, min: 0, max: 2 },
     ],
   ];
 
@@ -48,6 +48,17 @@ export default () => {
   };
   return (
     <div className="mt-10">
+      <div>
+        {martixData.map(item => {
+          return (
+            <div className="flex gap-3">
+              {item.map(col => (
+                <div>{col.val}</div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
       <ConfigProvider
         theme={{
           components: {
@@ -68,20 +79,27 @@ export default () => {
         {martixData.map((row, rowIndex) => (
           <div className="flex justify-evenly gap-3 mt-3" key={rowIndex}>
             {row.map((col, colIndex) => (
-              <div className="w-full relative" key={colIndex}>
-                <InputNumber
-                  min={1}
-                  max={10}
-                  defaultValue={col.val}
-                  value={col.val}
-                  onChange={val => onChange(val as number, rowIndex, colIndex)}
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 border-none  focus:outline-none bg-transparent h-7"
-                />
+              <div className="w-full flex-col" key={colIndex}>
+                <div className="flex justify-between items-center">
+                  <span className="text-[.6rem]">
+                    {rowIndex},{colIndex}
+                  </span>
+                  <InputNumber
+                    min={col.min}
+                    max={col.max}
+                    defaultValue={col.val}
+                    value={col.val}
+                    onChange={val => onChange(val as number, rowIndex, colIndex)}
+                    className=" border-none bg-transparent h-7 "
+                  />
+                </div>
                 <Slider
                   className="flex-1"
-                  min={1}
-                  max={20}
+                  min={col.min}
+                  max={col.max}
+                  defaultValue={col.val}
                   onChange={val => onChange(val, rowIndex, colIndex)}
+                  step={0.01}
                 />
               </div>
             ))}
@@ -89,7 +107,9 @@ export default () => {
         ))}
       </ConfigProvider>
 
-      <Box></Box>
+      <div className="flex justify-center w-full h-64 items-center  preserve-3d perspective-500">
+        <Box></Box>
+      </div>
     </div>
   );
 };

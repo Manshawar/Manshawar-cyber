@@ -10,6 +10,15 @@ let initHtmlTag = [
     },
     head: true
   },
+  {
+    tag: 'meta',
+    // 通过 window.RSPRESS_THEME 变量来指定默认的主题模式，可选值为 'dark' 和 'light'
+    attrs: {
+      name: 'referrer',
+      content: "never"
+    },
+    head: true
+  },
 
   {
     tag: 'meta',
