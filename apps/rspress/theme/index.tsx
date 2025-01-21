@@ -18,7 +18,17 @@ const Layout = () => {
     });
   }, []);
 
-  return <Theme.Layout />;
+  return (
+    <Theme.Layout
+      bottom={
+        <div className=" flex justify-center items-center" style={{ padding: "10px 0" }}>
+          <a href="https://beian.miit.gov.cn/" className="text-gray-500" target="_blank">
+            鄂ICP备2025091864号-1
+          </a>
+        </div>
+      }
+    />
+  );
 };
 export default {
   ...Theme,

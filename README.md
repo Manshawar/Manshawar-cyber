@@ -1,33 +1,42 @@
-# `Turborepo` Vite starter
+# 这是一个turbo应用
 
-This is an official starter Turborepo.
-
-## Using this example
-
-Run the following command:
+## 安装turbo
 
 ```sh
-npx create-turbo@latest -e with-vite
+npm i turbo -g
 ```
 
-## What's inside?
+## 克隆仓库
 
-This Turborepo includes the following packages and apps:
+```bash
+git clone https://github.com/Manshawar/Manshawar-cyber.git
+```
 
-### Apps and Packages
+## 安装包
 
-- `docs`: a vanilla [vite](https://vitejs.dev) ts app
-- `web`: another vanilla [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component & utility library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+```bash
+npm i pnpm -g
+pnpm i 
+//如果单独安装某个子包的应用请使用
+pnpm i --filter <package.json的name>
+```
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+## 开启博客应用
 
-### Utilities
+```bash
+turbo blog
+```
 
-This Turborepo has some additional tools already setup for you:
+请确认您安装了node_module 如果子文件中没有 推荐使用下列命令进行安装
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+```bash
+pnpm i --filter rspress-blog
+```
+
+## 使用tauri图床应用
+
+请确保您安装了 `rust`及其相关环境，rust应用基于antdesignpro进行改造
+
+```bash
+turbo ant:t
+```
