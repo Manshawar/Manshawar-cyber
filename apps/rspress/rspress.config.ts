@@ -1,6 +1,9 @@
 import * as path from 'node:path';
-import { env } from 'node:process';
+
 import { defineConfig } from 'rspress/config';
+import {myAttr} from "./plugins/html"
+
+
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
   title: 'Manshawar blog',
@@ -15,46 +18,7 @@ export default defineConfig({
       },
     },
     html: {
-      tags: env.NODE_ENV !== 'development' ? [
-
-        {
-          tag: 'script',
-          // 通过 window.RSPRESS_THEME 变量来指定默认的主题模式，可选值为 'dark' 和 'light'
-          children: "window.RSPRESS_THEME = 'dark';",
-        },
-
-        {
-          tag: 'meta',
-          // 通过 window.RSPRESS_THEME 变量来指定默认的主题模式，可选值为 'dark' 和 'light'
-          attrs: {
-            name: 'keywords',
-            content: "杨浩然 杨浩然的个人博客 杨浩然的博客 杨浩然的个人网站 Manshawar Manshawar Blog Manshawar博客 博客"
-          }
-        },
-
-        {
-          tag: 'meta',
-          // 通过 window.RSPRESS_THEME 变量来指定默认的主题模式，可选值为 'dark' 和 'light'
-          attrs: {
-            name: 'description',
-            content: "杨浩然的个人记录学习博客 Manshawar 个人博客 Manshawar博客 博客 个人网站"
-          }
-        },
-
-        {
-          tag: 'link',
-          attrs: {
-            rel: "manifest",
-            href: "/sw/manifest.json"
-          }
-        },
-        {
-
-          tag: 'script',
-          attrs: { src: '/sw/service.js' },
-        },
-
-      ] : []
+      tags: myAttr()
     },
   },
 
