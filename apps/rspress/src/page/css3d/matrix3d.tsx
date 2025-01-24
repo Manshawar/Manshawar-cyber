@@ -49,11 +49,11 @@ export default () => {
   return (
     <div className="mt-10">
       <div>
-        {martixData.map(item => {
+        {martixData.map((item, key) => {
           return (
-            <div className="flex gap-3">
-              {item.map(col => (
-                <div>{col.val}</div>
+            <div className="flex gap-3" key={key}>
+              {item.map((col, index) => (
+                <div key={index}>{col.val}</div>
               ))}
             </div>
           );
