@@ -2,13 +2,14 @@ import styles, { keyframes, css } from "styled-components";
 let colorList = ["#222", "#401a2a", "#741a38", "#9b123c", "#c10a40"].reverse();
 export default () => {
   let Container = styles.div`overflow: hidden;height:400px; perspective: 1000px; position: relative;transform-style: preserve-3d;`;
-  let Assembly = styles.div` transform-style: preserve-3d; transform:rotateX(-35deg) rotateY(-45deg);padding-top: 20px;`;
+  let Assembly = styles.div` transform-style: preserve-3d; transform:translateZ(-200px) rotateX(-35deg) rotateY(-45deg) `;
   let Cube = styles.div<{ color: string; index: number; rect: number }>`
-  width: ${props => props.rect}px;
+  width: ${props => props.rect + 1}px;
   height: ${props => props.rect}px;
   background:${props => props.color};
   position: relative;
   transform-style: preserve-3d; 
+  
  &:before,
 &:after {
   width: inherit;
@@ -20,16 +21,18 @@ export default () => {
     position: absolute;
     left:0;
     top:0; 
-    display:block;
-    filter: brightness(1.15);
+    filter: brightness(1.3);
+    border:none
 }
 &:after{
-transform:rotateX(-90deg);
-transform-origin: center top;
+ 
+   transform: rotateX(-90deg);
+    transform-origin: center top;
 }
 &:before{
-transform:rotateY(-90deg);
-transform-origin: center right
+  
+  transform: rotateY(-90deg);
+    transform-origin: right center;
 
 }
   `;

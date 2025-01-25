@@ -24,7 +24,7 @@ export default () => {
   };
 
   // animation: ${a1} 4s infinite;
-  let BoxItem = styles.div<{ i: number; intI: number }>`width: 60px;
+  let BoxItem = styles.div<{ i: number }>`width: 60px;
   height: 60px;
   border-radius: 12px;
   position: absolute;
@@ -45,7 +45,7 @@ export default () => {
         return (
           <div key={intI} style={{ transform: `rotate(${intI * 90}deg)` }}>
             {Array.from({ length: 40 }, (_, index) => (
-              <BoxItem key={index} i={index + 1} intI={intI + 1}></BoxItem>
+              <BoxItem key={index} i={index + 1}></BoxItem>
             ))}
           </div>
         );

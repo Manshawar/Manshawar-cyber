@@ -1,8 +1,8 @@
 
-import Css3d from "@page/css3d/matrix3d";
-import Animation from "@page/css3d/animation";
-import Animation3d from "@page/css3d/3dAnimation";
-
+import Css3d from "@page/css/css3d/matrix3d";
+import Animation from "@page/css/css3d/animation";
+import Animation3d from "@page/css/css3d/3dAnimation";
+import Gradient from "@page/css/css3d/Gradient"
 
 
 # css的高级技巧
@@ -201,3 +201,24 @@ transform:translate(7em) scale3d(0, 0, 0);
 };
 
 ```
+
+## 渐变
+<Gradient />
+
+
+## 伪类 :is 和 :where的逻辑函数和条件函数
+:is() 和 :where() 是 CSS 中的伪类选择器，它们允许我们以一种高效的方式对一系列选择器进行分组和定位。
+
+我们看下下面代码演示，仔细体会简化代码：
+
+```css
+button.foces, button:focus {  } 
+->
+button:is(.focus, :focus) {}
+
+content > h1, content > h2, content > h3, content > h4 {}
+->
+content > :is(h1, h2, h3, h4)
+
+```
+两者唯一区别在于权重，:where 的权重为 0，:is 作为伪类选择器的权重为 10。
