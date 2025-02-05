@@ -39,17 +39,12 @@ export default defineConfig({
             dockedPosition: "right",
             models: [
               {
-                "path": "https://model.oml2d.com/cat-black/model.json",
-                "scale": 0.15,
+                path: "https://www.yanghaoran.online/live2d/Kar98k-normal/model.json",
+                "scale": 0.1,
                 position: [0, 0],
 
               },
-              {
-                path: "https://model.oml2d.com/HK416-1-normal/model.json",
-                position: [0, 0],
-                scale: 0.08,
 
-              },
             ],
           }
         ],
