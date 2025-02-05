@@ -20,6 +20,16 @@ export default defineConfig({
     html: {
       tags: myAttr()
     },
+    performance: {
+      chunkSplit: {
+        forceSplitting: {
+          rspress: /node_modules[\\/]rspress/,
+        },
+        override: {
+          cacheGroups:{}
+        }
+      }
+    }
   },
 
   logo: {

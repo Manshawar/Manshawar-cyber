@@ -29,6 +29,11 @@ let initHtmlTag = [
     },
     head: true
   },
+  // {
+
+  //   tag: 'script',
+  //   attrs: { src: '/sdk/live2dcubismcore.js' },
+  // },
 ]
 let webApp: any = [
   {
