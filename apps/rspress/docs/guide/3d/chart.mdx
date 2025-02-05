@@ -1,5 +1,6 @@
 import Chart2d from "@/page/css/chart/2dChart";
 import Pie from "@/page/css/chart/pie";
+import PointChart from "@/page/css/chart/dataPoint";
 
 # css图表
 
@@ -10,3 +11,15 @@ CSS 实现柱状图
 # css饼图
 
 <Pie />
+
+# pointChart
+
+<PointChart />
+
+# 折线图
+
+点与点的连接，实际上是斜边，我们使用三角函数进行处理
+
+`sin（x）= 对边 / 斜边`
+
+`var angle = Math.acos(对边 / 斜边) * (180 / Math.PI);`
