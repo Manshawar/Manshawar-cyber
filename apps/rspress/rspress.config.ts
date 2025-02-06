@@ -20,16 +20,40 @@ export default defineConfig({
     html: {
       tags: myAttr()
     },
+
     performance: {
       chunkSplit: {
         forceSplitting: {
           rspress: /node_modules[\\/]rspress/,
+
+
         },
         override: {
-          cacheGroups:{}
+          cacheGroups: {
+            react: {
+              test: /node_modules[\\/](react|react-dom)[\\/]/,
+              priority: -8,
+              reuseExistingChunk: true,
+              name(module) {
+                return 'react-vendor'
+              }
+            },
+            antd: {
+              test: /[\\/]node_modules[\\/](antd)[\\/]/,
+              priority: -10,
+              reuseExistingChunk: true,
+              name() {
+                return 'antd-vendor'
+              }
+            },
+
+
+
+          },
         }
       }
-    }
+    },
+
   },
 
   logo: {

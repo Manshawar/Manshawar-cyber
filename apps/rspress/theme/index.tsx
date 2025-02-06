@@ -1,6 +1,8 @@
 import Theme from "rspress/theme";
 import { useEffect } from "react";
-import "./styles/index.css";
+import("./styles/index.css").then(() => {
+  console.log("Styles loaded");
+});
 // 以下展示所有的 Props
 const Layout = () => {
   useEffect(() => {

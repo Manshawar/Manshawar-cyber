@@ -12,7 +12,6 @@
   "dependencies": {
     "@rsbuild/core": "1.1.14",
     "antd": "^5.23.1",
-    "next-workbox-webpack-plugin": "^2.1.1",
     "oh-my-live2d": "^0.19.3",
     "pixi-live2d-display": "0.4.0",
     "pixi.js": "8.7.3",
