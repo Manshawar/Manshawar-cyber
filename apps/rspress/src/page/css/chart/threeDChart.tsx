@@ -1,29 +1,72 @@
-import styles, { keyframes, css } from "styled-components";
+/*
+ * @Author: Manshawar 825750768@qq.com
+ * @Date: 2025-02-20 11:21:06
+ * @LastEditors: Manshawar 825750768@qq.com
+ * @LastEditTime: 2025-02-20 12:20:04
+ * @FilePath: \Manshawar-cyber\apps\rspress\src\page\css\chart\threeDChart.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+
+import myStyle from "./threeDChart.module.css";
+const styles = myStyle;
+
 export default () => {
-  let Container = styles.div`height:400px;`;
-  let Chart = styles.div`
-        width: 80%;
-        height: 300px;
-        display: flex;
-        gap:1em;
-        justify-content: space-between;
-        align-items: flex-end;
-        background-color: #f0f0f0;
-        padding: 10px;
-        position: relative;`;
-  let Bar = styles.div`
-        width: 30px;
-        background-color: #3498db;
-        transition: height 0.5s ease-in-out;
-        position: relative;
-  `;
   return (
-    <Container>
-      <Chart>
-        {Array.from({ length: 7 }).map((_, index) => {
-          return <Bar key={index} style={{ height: Math.random() * 100 + "%" }}></Bar>;
-        })}
-      </Chart>
-    </Container>
+    <div className={styles["cube-warp"]}>
+      <div className={styles["bg-cube"]}>
+        <div className={styles.yAxis}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div className={styles.xAxis}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div className={`${styles["bg-face"]} ${styles["bg-front"]}`}></div>
+        <div className={`${styles["bg-face"]} ${styles["bg-back"]}`}></div>
+        <div className={`${styles["bg-face"]} ${styles["bg-left"]}`}></div>
+        <div className={`${styles["bg-face2"]} ${styles["bg-bottom"]}`}></div>
+      </div>
+      <div className={styles.c1}>
+        <div className={styles.cube}>
+          <div className={`${styles.face} ${styles.front}`}></div>
+          <div className={`${styles.face} ${styles.back}`}></div>
+          <div className={`${styles.face} ${styles.left}`}></div>
+          <div className={`${styles.face} ${styles.right}`}></div>
+          <div className={`${styles.face2} ${styles.top}`}></div>
+        </div>
+      </div>
+      <div className={styles.c2}>
+        <div className={styles.cube}>
+          <div className={`${styles.face} ${styles.front}`}></div>
+          <div className={`${styles.face} ${styles.back}`}></div>
+          <div className={`${styles.face} ${styles.left}`}></div>
+          <div className={`${styles.face} ${styles.right}`}></div>
+          <div className={`${styles.face2} ${styles.top}`}></div>
+        </div>
+      </div>
+      <div className={styles.c3}>
+        <div className={styles.cube}>
+          <div className={`${styles.face} ${styles.front}`}></div>
+          <div className={`${styles.face} ${styles.back}`}></div>
+          <div className={`${styles.face} ${styles.left}`}></div>
+          <div className={`${styles.face} ${styles.right}`}></div>
+          <div className={`${styles.face2} ${styles.top}`}></div>
+        </div>
+      </div>
+      <div className={styles.c4}>
+        <div className={styles.cube}>
+          <div className={`${styles.face} ${styles.front}`}></div>
+          <div className={`${styles.face} ${styles.back}`}></div>
+          <div className={`${styles.face} ${styles.left}`}></div>
+          <div className={`${styles.face} ${styles.right}`}></div>
+          <div className={`${styles.face2} ${styles.top}`}></div>
+        </div>
+      </div>
+    </div>
   );
 };
