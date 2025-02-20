@@ -1,37 +1,28 @@
+/*
+ * @Author: Manshawar 825750768@qq.com
+ * @Date: 2025-01-20 14:03:19
+ * @LastEditors: Manshawar 825750768@qq.com
+ * @LastEditTime: 2025-02-20 11:33:33
+ * @FilePath: \Manshawar-cyber\apps\rspress\components\Live2DWidget.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import React, { useEffect, useRef } from "react";
 import { Application, Assets, Sprite } from "pixi.js";
 import { Live2DModel } from "pixi-live2d-display";
 import { loadOml2d } from "oh-my-live2d";
-// let stage = document.querySelector(".oml2d-stage");
 
 const Live2DWidget = options => {
   const canvasRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // const initializePixi = async () => {
-    //   const app = new Application();
-    //   await app.init({ background: "#1099bb", resizeTo: window });
-    //   if (canvasRef.current) {
-    //     canvasRef.current.appendChild(app.canvas);
-
-    //     // const model = await Live2DModel.from(
-    //     //   "https://www.yanghaoran.online/live2d/Kar98k-normal/model.json"
-    //     // );
-    //     // app.stage.addChild(model as any);
-    //     // model.x = 100;
-    //     // model.y = 100;
-    //     // model.rotation = Math.PI;
-    //     // model.skew.x = Math.PI;
-    //     // model.scale.set(2, 2);
-    //     // model.anchor.set(0.5, 0.5);
-    //   }
-    // };
-
     // initializePixi();
 
-    loadOml2d(options);
-    // dom.addEventListener("mouseenter", () => {
-    //   // stage.style.display = "none";
-    // });
+    let live2d = loadOml2d(options);
+    document.getElementById("aside-container").addEventListener("mouseenter", () => {
+      live2d.stageSlideOut();
+    });
+    document.getElementById("aside-container").addEventListener("mouseleave", () => {
+      live2d.stageSlideIn();
+    });
   }, []);
   // return <>{<div ref={canvasRef}></div>}</>;
 };
