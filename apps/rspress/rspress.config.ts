@@ -5,7 +5,7 @@ import { myAttr } from "./plugins/html"
 
 const cache = new Map();
 
-function isDepInclude(id: string, depPaths: string[], importChain: string[], getModuleInfo:any): boolean | undefined {
+function isDepInclude(id: string, depPaths: string[], importChain: string[], getModuleInfo: any): boolean | undefined {
   const key = `${id}-${depPaths.join('|')}`;
   // 出现循环依赖，不考虑
   if (importChain.includes(id)) {
@@ -29,7 +29,7 @@ function isDepInclude(id: string, depPaths: string[], importChain: string[], get
   }
   // 核心逻辑，递归查找上层引用者
   const isInclude = moduleInfo.importers.some(
-    (importer:any) => isDepInclude(importer, depPaths, importChain.concat(id), getModuleInfo)
+    (importer: any) => isDepInclude(importer, depPaths, importChain.concat(id), getModuleInfo)
   );
   // 设置缓存
   cache.set(key, isInclude);
@@ -93,26 +93,26 @@ export default defineConfig({
 
   plugins: [
 
-    {
-      name: "Live2DWidget",
-      globalUIComponents: [
-        [
-          path.join(__dirname, './components/Live2DWidget.tsx'),
-          {
-            dockedPosition: "right",
-            models: [
-              {
-                path: "https://www.yanghaoran.online/live2d/Kar98k-normal/model.json",
-                "scale": 0.1,
-                position: [0, 0],
+    // {
+    //   name: "Live2DWidget",
+    //   globalUIComponents: [
+    //     [
+    //       path.join(__dirname, './components/Live2DWidget.tsx'),
+    //       {
+    //         dockedPosition: "right",
+    //         models: [
+    //           {
+    //             path: "https://www.yanghaoran.online/live2d/Kar98k-normal/model.json",
+    //             "scale": 0.1,
+    //             position: [0, 0],
 
-              },
+    //           },
 
-            ],
-          }
-        ],
-      ],
-    },
+    //         ],
+    //       }
+    //     ],
+    //   ],
+    // },
     {
       name: "svgPlugin",
       globalUIComponents: [
