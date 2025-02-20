@@ -1,72 +1,212 @@
-/*
- * @Author: Manshawar 825750768@qq.com
- * @Date: 2025-02-20 11:21:06
- * @LastEditors: Manshawar 825750768@qq.com
- * @LastEditTime: 2025-02-20 12:20:04
- * @FilePath: \Manshawar-cyber\apps\rspress\src\page\css\chart\threeDChart.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
+import styled, { keyframes } from "styled-components";
+import React from "react";
 
-import myStyle from "./threeDChart.module.css";
-const styles = myStyle;
+const ChartContainer = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+`;
+
+const Chart = styled.div`
+  width: 600px;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(-30deg);
+`;
+
+const Coordinates = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+`;
+
+const YAxis = styled.div`
+  position: absolute;
+  left: -40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+`;
+
+const XAxis = styled.div`
+  position: absolute;
+  bottom: -30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const Label = styled.div`
+  color: #666;
+  font-size: 12px;
+`;
+
+const Grid = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+`;
+
+const GridFront = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20% 20%;
+`;
+
+const GridLeft = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotateY(90deg) translateZ(-1px);
+  background: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20% 20%;
+`;
+
+const GridBottom = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotateX(90deg) translateZ(0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 20% 20%;
+`;
+
+const Bars = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+`;
+
+const BarWrapper = styled.div<{ index: number; isMax: boolean }>`
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  transform-style: preserve-3d;
+  transform: translateX(-20px);
+  left: ${props => 25 + props.index * 20}%;
+  z-index: ${props => (props.isMax ? 10 : 1)};
+`;
+
+const Bar = styled.div<{ height: number; color: string; isHighlighted: boolean }>`
+  position: relative;
+  width: 100%;
+  height: ${props => props.height}px;
+  transform-style: preserve-3d;
+  transform-origin: bottom center;
+  transition: all 0.3s ease;
+`;
+
+const BarFace = styled.div<{ color: string }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+`;
+
+const BarFront = styled(BarFace)`
+  background: ${props => props.color};
+  transform: translateZ(20px);
+`;
+
+const BarBack = styled(BarFace)`
+  background: ${props => props.color};
+  transform: translateZ(-20px);
+`;
+
+const BarLeft = styled(BarFace)`
+  width: 40px;
+  background: ${props => props.color};
+  filter: brightness(0.8);
+  transform: rotateY(90deg) translateZ(-20px);
+`;
+
+const BarRight = styled(BarFace)`
+  width: 40px;
+  background: ${props => props.color};
+  filter: brightness(0.8);
+  transform: rotateY(-90deg) translateZ(20px);
+`;
+
+const BarTop = styled(BarFace)`
+  height: 40px;
+  background: ${props => props.color};
+  filter: brightness(1.2);
+  transform: rotateX(-90deg) translateZ(-20px);
+`;
+
+const BarValue = styled.div<{ isHighlighted: boolean }>`
+  position: absolute;
+  top: -24px;
+  width: 100%;
+  text-align: center;
+  color: ${props => (props.isHighlighted ? "#ff6b6b" : "#333")};
+  font-size: 12px;
+  font-weight: ${props => (props.isHighlighted ? "bold" : "normal")};
+  transform: translateZ(20px);
+`;
 
 export default () => {
+  const chartData = {
+    xAxis: ["Q1", "Q2", "Q3", "Q4"],
+    yAxis: ["400", "300", "200", "100", "0"],
+    data: [
+      { value: 320, color: "#4facfe" },
+      { value: 240, color: "#43e97b" },
+      { value: 380, color: "#fa709a" },
+      { value: 220, color: "#66a6ff" },
+    ],
+  };
+
+  const maxValue = Math.max(...chartData.data.map(item => item.value));
+  const maxIndex = chartData.data.findIndex(item => item.value === maxValue);
+
   return (
-    <div className={styles["cube-warp"]}>
-      <div className={styles["bg-cube"]}>
-        <div className={styles.yAxis}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <div className={styles.xAxis}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <div className={`${styles["bg-face"]} ${styles["bg-front"]}`}></div>
-        <div className={`${styles["bg-face"]} ${styles["bg-back"]}`}></div>
-        <div className={`${styles["bg-face"]} ${styles["bg-left"]}`}></div>
-        <div className={`${styles["bg-face2"]} ${styles["bg-bottom"]}`}></div>
-      </div>
-      <div className={styles.c1}>
-        <div className={styles.cube}>
-          <div className={`${styles.face} ${styles.front}`}></div>
-          <div className={`${styles.face} ${styles.back}`}></div>
-          <div className={`${styles.face} ${styles.left}`}></div>
-          <div className={`${styles.face} ${styles.right}`}></div>
-          <div className={`${styles.face2} ${styles.top}`}></div>
-        </div>
-      </div>
-      <div className={styles.c2}>
-        <div className={styles.cube}>
-          <div className={`${styles.face} ${styles.front}`}></div>
-          <div className={`${styles.face} ${styles.back}`}></div>
-          <div className={`${styles.face} ${styles.left}`}></div>
-          <div className={`${styles.face} ${styles.right}`}></div>
-          <div className={`${styles.face2} ${styles.top}`}></div>
-        </div>
-      </div>
-      <div className={styles.c3}>
-        <div className={styles.cube}>
-          <div className={`${styles.face} ${styles.front}`}></div>
-          <div className={`${styles.face} ${styles.back}`}></div>
-          <div className={`${styles.face} ${styles.left}`}></div>
-          <div className={`${styles.face} ${styles.right}`}></div>
-          <div className={`${styles.face2} ${styles.top}`}></div>
-        </div>
-      </div>
-      <div className={styles.c4}>
-        <div className={styles.cube}>
-          <div className={`${styles.face} ${styles.front}`}></div>
-          <div className={`${styles.face} ${styles.back}`}></div>
-          <div className={`${styles.face} ${styles.left}`}></div>
-          <div className={`${styles.face} ${styles.right}`}></div>
-          <div className={`${styles.face2} ${styles.top}`}></div>
-        </div>
-      </div>
-    </div>
+    <ChartContainer>
+      <Chart>
+        <Coordinates>
+          <YAxis>
+            {chartData.yAxis.map((value, index) => (
+              <Label key={index}>{value}</Label>
+            ))}
+          </YAxis>
+          <XAxis>
+            {chartData.xAxis.map((value, index) => (
+              <Label key={index}>{value}</Label>
+            ))}
+          </XAxis>
+          <Grid>
+            <GridFront />
+            <GridLeft />
+            <GridBottom />
+          </Grid>
+        </Coordinates>
+
+        <Bars>
+          {chartData.data.map((item, index) => (
+            <BarWrapper key={index} index={index} isMax={index === maxIndex}>
+              <Bar height={item.value} color={item.color} isHighlighted={index === maxIndex}>
+                <BarFront color={item.color} />
+                <BarBack color={item.color} />
+                <BarLeft color={item.color} />
+                <BarRight color={item.color} />
+                <BarTop color={item.color} />
+                <BarValue isHighlighted={index === maxIndex}>{item.value}</BarValue>
+              </Bar>
+            </BarWrapper>
+          ))}
+        </Bars>
+      </Chart>
+    </ChartContainer>
   );
 };
