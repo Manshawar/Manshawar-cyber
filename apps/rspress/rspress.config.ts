@@ -2,6 +2,7 @@ import * as path from 'node:path';
 
 import { defineConfig } from 'rspress/config';
 import { myAttr } from "./plugins/html"
+import { pluginSvgr } from '@rsbuild/plugin-svgr';
 
 const cache = new Map();
 
@@ -39,7 +40,13 @@ export default defineConfig({
   root: path.join(__dirname, 'docs'),
   title: 'Manshawar blog',
   icon: '/rspress-icon.png',
+  builderPlugins: [pluginSvgr({
+    svgrOptions: {
+      exportType: 'default',
+    },
+  })],
   builderConfig: {
+
     //@ts-ignore
     resolve: {
       alias: {

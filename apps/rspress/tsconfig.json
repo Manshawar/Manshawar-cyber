@@ -22,7 +22,7 @@
     "baseUrl": ".",
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
-  "include": ["src/**/*", "types/**/*.d.ts", "theme/**/*"],
+  "include": ["src/**/*", "types/**/*.d.ts", "theme/**/*", "docs/**/*.mdx", "docs/**/*.tsx"],
   "mdx": {
     "checkMdx": true
   }

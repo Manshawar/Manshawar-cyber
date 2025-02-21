@@ -1,0 +1,8 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="mask">
+      <image width="200" height="200" href="/images/mask.png" />
+    </mask>
+  </defs>
+  <image mask="url(#mask)" width="200" height="200" href="/images/wolp1.png" />
+</svg>

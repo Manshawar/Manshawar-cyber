@@ -37,7 +37,7 @@ const Live2DManager = {
   setupEvents(pathname: string) {
     if (pathname !== "/" && pathname !== "/index.html") {
       const asideDom = document.getElementById("aside-container");
-      console.log("setupEvents", asideDom);
+
       const enterFn = () => this.instance?.stageSlideOut();
       const leaveFn = () => this.instance?.stageSlideIn();
 
