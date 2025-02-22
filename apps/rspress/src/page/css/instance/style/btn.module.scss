@@ -1,0 +1,124 @@
+.container {
+  border: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  width: 5em;
+  --hue: 240;
+  --bg: hsl(var(--hue), 10%, 90%);
+  --bg2: hsl(var(--hue), 10%, 80%);
+
+  --textBg: hsl(var(--hue), 90%, 55%);
+  --primary1: hsl(var(--hue), 90%, 55%);
+  --primary2: hsl(var(--hue), 90%, 45%);
+  .btn__text {
+    background-color: var(--textBg);
+    border-radius: inherit;
+    color: hsl(0, 0%, 100%);
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    transition:
+      background-color 0.15s linear,
+      color 0.15s 0.3s ease-in-out;
+    display: grid;
+    place-items: center;
+  }
+  .btn {
+    background-color: transparent;
+    border-radius: 1em;
+    display: block;
+    position: relative;
+    width: 5em;
+    height: 2em;
+    transition: width 0.3s ease-in-out;
+    font-size: 0.64em;
+    transform-origin: center;
+  }
+
+  /* 模拟点击下沉效果 */
+  .btn:not(:disabled):active {
+    transform: translateY(0.1em);
+  }
+  .btn__progress {
+    overflow: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2em;
+    height: 2em;
+    visibility: hidden;
+  }
+
+  .btn__progress-track {
+    r: 12px;
+    stroke: var(--bg2);
+    stroke-width: 24;
+  }
+
+  .btn__progress-fill {
+    stroke: var(--primary1);
+    stroke-dashoffset: 125.66;
+  }
+  .btn__progress-check {
+    stroke: hsl(0, 0%, 100%);
+    stroke-dashoffset: 34;
+  }
+  .btn--running,
+  .btn--done {
+    /* 移除罗廓线 */
+    outline: none;
+    /* 禁止响应鼠标事件 */
+    pointer-events: none;
+    width: 2em;
+    /* 无法选中 */
+    user-select: none;
+    /* 优雅降级，moz 兼容 firefox，webkit 兼容 chrome 和 safari */
+    -moz-user-select: none;
+    -webkit-user-select: none;
+
+    .btn__text {
+      color: transparent;
+      /* 文本动画 */
+      transition:
+        background-color 0.3s ease-in-out,
+        visibility 0.3s steps(1);
+    }
+  }
+
+  :is(.btn--running, .btn--done) .btn__progress {
+    visibility: visible;
+  }
+  .btn--running {
+    .btn__text {
+      background-color: var(--bg2);
+      visibility: hidden;
+    }
+    .btn__progress-track {
+      r: 20px;
+      stroke-width: 8;
+      /* 第二个属性 .3s 代表延迟，需要延迟按钮宽度的变化时间 */
+      transition:
+        r 0.3s 0.3s ease-in-out,
+        stroke-width 0.3s 0.3s ease-in-out;
+    }
+    .btn__progress-fill {
+      stroke-dashoffset: 0;
+      /* 延迟0.6s，是因为有进度条展示动画、宽度动画一共0.6s, 然后总运行时间 2s */
+      transition: stroke-dashoffset 2s 0.6s linear;
+    }
+  }
+  .btn--done {
+    .btn__progress-track {
+      stroke: var(--primary1);
+      transition:
+        r 0.3s ease-in-out,
+        stroke-width 0.3s ease-in-out;
+    }
+    .btn__progress-check {
+      /* 成功动画，将实线开始偏移，注意要延迟进度条的结束动画 */
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.3s 0.3s ease-out;
+    }
+  }
+}

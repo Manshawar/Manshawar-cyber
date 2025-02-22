@@ -2,4 +2,16 @@ import Btn from "@page/css/instance/btn";
 
 # 可视化实例
 
+1. stroke-dasharray 表现属性定义了用于绘制形状轮廓的虚线段和间隙的排列形式。
+
+2. stroke-dashoffset 表现属性定义了虚线段和间隙的偏移量。
+
+3. dasharray以逗号或空格分隔的 length 和 percentage 列表，用于定义交替的虚线段和间隙的长度。如果提供了奇数个值，则重复该列表以产生偶数个值，因此 5,3,2 等价于 5,3,2,5,3,2。
+
+4. stroke-dashoffset 是一种表现属性，它定义了虚线与路径起点之间的偏移量。
+
+5. 对于形状元素和文本，fill 属性是外观属性，用来定义给定图形元素内部的颜色。哪一块算是“内部”取决于形状本身以及fill-rule 属性的值。作为一个外观属性，它可以直接用作 CSS 样式表内部的属性。
+
+- 使用`stroke-dashoffset:125.66`作为初始偏移量
+- 使用`stroke-dasharray: 125.66 125.66`,做一组偏移虚线
 <Btn />
