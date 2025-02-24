@@ -26,6 +26,7 @@
     "tailwindcss": "^3.4.17",
     "typescript-plugin-css-modules": "5.1.0",
     "webpack-pwa-manifest": "^4.3.0",
-    "workbox-webpack-plugin": "^7.3.0"
+    "workbox-webpack-plugin": "^7.3.0",
+    "jsonl/rspress": "workspace:*"
   }
 }

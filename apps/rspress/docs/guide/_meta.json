@@ -17,6 +17,11 @@
   },
   {
     "type": "dir",
+    "name": "AIGC",
+    "label": "AIGC"
+  },
+  {
+    "type": "dir",
     "name": "project",
     "label": "工程体系"
   },

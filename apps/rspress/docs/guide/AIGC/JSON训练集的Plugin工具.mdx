@@ -1,0 +1,13 @@
+# JSON训练集的Plugin工具
+
+## 1、 思路
+
+1. 书写插件，获取ast语法树
+2. 对code进行拼接，生成jsonl文件
+3. 排除资源文件和nodemodule库
+4. 考虑插件兼容性 自定义文件后缀 生成json文件
+5. 生成缓存文件json，打包时对比hash值，判断是否拼接json文件（如果部署本地ai再考虑这个做法）,阿里云训练集限制100个
+6. 打包完成后上传json文件
+7. express后端接收后上传阿里云oss
+8. 使用 <a href="https://help.aliyun.com/zh/model-studio/developer-reference/model-customization-file-management-service?spm=a2c4g.11186623.help-menu-2400256.d_3_5_1.3a57b514rotTBZ&scm=20140722.H_2712476._.OR_help-T_cn~zh-V_1" target="_blank">模型调优</a>接口进行调优
+9. 在前端接入对话框 后续继承ai能力

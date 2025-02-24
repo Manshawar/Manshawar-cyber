@@ -1,0 +1,353 @@
+import Diff from "@/page/baseScript/diff";
+
+# diff 
+我们先看看简化版本，它并没有处理递归和更新 
+
+<img src="https://ik.imagekit.io/Manshawar/ferris_Ry3QHhKSw" />
+
+<Diff />
+
+
+```ts
+
+  // 定义虚拟节点接口
+  interface VNode {
+    type: string;
+    props: Record<string, any>;
+    children: VNode[];
+    key?: string | number;
+  }
+
+  // 定义补丁操作的几种类型
+  type Patch =
+    | { type: "REPLACE"; newNode: VNode }
+    | { type: "UPDATE_PROPS"; props: Record<string, any> }
+    | { type: "REORDER"; moves: (MoveAction | null)[] }
+    | { type: "TEXT"; content: string };
+
+  type MoveAction =
+    | { type: "INSERT"; node: VNode; index: number }
+    | { type: "REMOVE"; index: number };
+
+  // 核心diff算法
+  function diff(oldNode: VNode, newNode: VNode): Patch[] {
+    const patches: Patch[] = [];
+
+    // 1. 类型不同直接替换
+    if (oldNode.type !== newNode.type) {
+      patches.push({ type: "REPLACE", newNode });
+      return patches;
+    }
+
+    // 2. 比较属性差异
+    const propPatches = diffProps(oldNode.props, newNode.props);
+    if (propPatches) {
+      patches.push({ type: "UPDATE_PROPS", props: propPatches });
+    }
+
+    // 3. 比较子节点差异
+    const childPatches = diffChildren(oldNode.children, newNode.children);
+    console.log("childPatches", childPatches);
+    if (childPatches.length > 0) {
+      patches.push({ type: "REORDER", moves: childPatches });
+    }
+
+    return patches;
+  }
+
+  // 比较属性差异
+  function diffProps(
+    oldProps: Record<string, any>,
+    newProps: Record<string, any>
+  ): Record<string, any> | null {
+    const patches: Record<string, any> = {};
+    let hasChanges = false;
+
+    // 找出变化的属性
+    for (const key in newProps) {
+      if (newProps[key] !== oldProps[key]) {
+        patches[key] = newProps[key];
+        hasChanges = true;
+      }
+    }
+
+    // 找出被删除的属性
+    for (const key in oldProps) {
+      if (!(key in newProps)) {
+        patches[key] = undefined;
+        hasChanges = true;
+      }
+    }
+
+    return hasChanges ? patches : null;
+  }
+
+  // 比较子节点差异（简化版）
+  function diffChildren(oldChildren: VNode[], newChildren: VNode[]): (MoveAction | null)[] {
+    const moves: (MoveAction | null)[] = [];
+    const oldMap: Record<string | number, VNode> = {};
+    const newMap: Record<string | number, VNode> = {};
+
+    // 创建key映射表
+    oldChildren.forEach((child, index) => {
+      const key = child.props.key ?? index;
+      oldMap[key] = child;
+    });
+
+    newChildren.forEach((child, index) => {
+      const key = child.props.key ?? index;
+      newMap[key] = child;
+    });
+
+    // 找出需要删除的节点
+    oldChildren.forEach((child, index) => {
+      const key = child.props.key ?? index;
+      if (!newMap[key]) {
+        moves.push({ type: "REMOVE", index });
+      }
+    });
+
+    // 找出需要新增/移动的节点
+    newChildren.forEach((child, newIndex) => {
+      const key = child.props.key ?? newIndex;
+      const oldIndex = oldChildren.find(c => (c.props.key ?? c) === key);
+
+      if (!oldIndex) {
+        moves.push({ type: "INSERT", node: child, index: newIndex });
+      } else if (oldIndex.props.key !== key) {
+        // 这里简化处理，实际需要更复杂的移动逻辑
+        moves.push({ type: "INSERT", node: child, index: newIndex });
+      }
+       // else if(oldIndex.props.key !== key&&oldIndex!==newIndex) 这里简化处理，实际需要更复杂的移动逻辑
+    });
+
+    return moves;
+  }
+
+  // 使用示例
+  const oldVNode: VNode = {
+    type: "div",
+    props: { className: "container" },
+    children: [
+      { type: "p", props: { key: 1 }, children: [] },
+      { type: "span", props: { key: 2 }, children: [] },
+    ],
+  };
+
+  const newVNode: VNode = {
+    type: "div",
+    props: { className: "wrapper" },
+    children: [
+      { type: "span", props: { key: 2 }, children: [] },
+      { type: "input", props: { key: 3 }, children: [] },
+    ],
+  };
+
+  const patches = diff(oldVNode, newVNode);
+  console.log(patches);
+
+```
+
+
+这里是完整的diff算法
+```ts
+interface VNode {
+  type: string | Function; // 支持组件
+  props: Record<string, any>;
+  children: VNode[];
+  key?: string | number;
+  el?: HTMLElement; // 关联的真实DOM
+}
+
+type Patch = 
+  | { type: 'REPLACE'; newNode: VNode }
+  | { type: 'UPDATE_PROPS'; patches: PropPatch[] }
+  | { type: 'REORDER'; moves: MoveAction[] }
+  | { type: 'TEXT'; content: string };
+
+type PropPatch = 
+  | { op: 'set'; key: string; value: any }
+  | { op: 'remove'; key: string };
+
+type MoveAction = 
+  | { type: 'INSERT'; node: VNode; afterKey?: string | number }
+  | { type: 'MOVE'; fromKey: string | number; toKey: string | number }
+  | { type: 'REMOVE'; key: string | number };
+
+// 优化后的diff算法
+function diff(oldNode: VNode, newNode: VNode): Patch[] {
+  const patches: Patch[] = [];
+
+  // 1. 节点类型不同直接替换
+  if (oldNode.type !== newNode.type) {
+    return [{ type: 'REPLACE', newNode }];
+  }
+
+  // 2. 比较属性差异（优化后的实现）
+  const propPatches = diffProps(oldNode.props, newNode.props);
+  if (propPatches.length > 0) {
+    patches.push({ type: 'UPDATE_PROPS', patches: propPatches });
+  }
+
+  // 3. 处理文本节点（新增优化）
+  if (typeof oldNode.children[0]?.type === 'string' && 
+      typeof newNode.children[0]?.type === 'string') {
+    if (oldNode.children[0] !== newNode.children[0]) {
+      patches.push({ 
+        type: 'TEXT', 
+        content: newNode.children[0].props.nodeValue 
+      });
+    }
+    return patches;
+  }
+
+  // 4. 优化后的子节点diff
+  const childPatches = diffChildren(oldNode.children, newNode.children);
+  if (childPatches.length > 0) {
+    patches.push({ type: 'REORDER', moves: childPatches });
+  }
+
+  return patches;
+}
+
+// 优化后的属性比较（支持事件处理）
+function diffProps(oldProps: Record<string, any>, newProps: Record<string, any>): PropPatch[] {
+  const patches: PropPatch[] = [];
+  const allKeys = new Set([...Object.keys(oldProps), ...Object.keys(newProps)]);
+
+  allKeys.forEach(key => {
+    // 跳过children属性
+    if (key === 'children') return;
+
+    const oldVal = oldProps[key];
+    const newVal = newProps[key];
+
+    // 事件处理优化（以on开头的属性）
+    if (key.startsWith('on')) {
+      if (oldVal !== newVal) {
+        patches.push({ op: 'remove', key });
+        patches.push({ op: 'set', key, value: newVal });
+      }
+      return;
+    }
+
+    if (!newProps.hasOwnProperty(key)) {
+      patches.push({ op: 'remove', key });
+    } else if (oldVal !== newVal) {
+      patches.push({ op: 'set', key, value: newVal });
+    }
+  });
+
+  return patches;
+}
+
+// 优化后的子节点diff（双指针算法）
+function diffChildren(oldChildren: VNode[], newChildren: VNode[]): MoveAction[] {
+  const moves: MoveAction[] = [];
+  const keyIndexMap: Map<string | number, number> = new Map();
+  const newKeyMap: Map<string | number, VNode> = new Map();
+
+  // 构建旧节点的key索引
+  oldChildren.forEach((child, index) => {
+    const key = child.key ?? index;
+    keyIndexMap.set(key, index);
+  });
+
+  // 构建新节点key映射
+  newChildren.forEach(child => {
+    const key = child.key ?? Symbol();
+    newKeyMap.set(key, child);
+  });
+
+  let lastIndex = 0;
+  const newChildrenWithKey = newChildren.map((child, index) => ({
+    key: child.key ?? index,
+    node: child,
+    index
+  }));
+
+  // 第一轮遍历：处理已有节点的移动
+  newChildrenWithKey.forEach(({ key, node, index: newIndex }) => {
+    const oldIndex = keyIndexMap.get(key);
+    
+    if (oldIndex === undefined) {
+      // 新增节点
+      moves.push({ 
+        type: 'INSERT', 
+        node,
+        afterKey: newChildrenWithKey[newIndex - 1]?.key 
+      });
+    } else {
+      // 需要移动的节点
+      if (oldIndex < lastIndex) {
+        moves.push({
+          type: 'MOVE',
+          fromKey: key,
+          toKey: newChildrenWithKey[newIndex - 1]?.key
+        });
+      }
+      lastIndex = Math.max(oldIndex, lastIndex);
+    }
+  });
+
+  // 第二轮遍历：处理需要删除的节点
+  oldChildren.forEach(oldChild => {
+    const key = oldChild.key ?? Symbol();
+    if (!newKeyMap.has(key)) {
+      moves.push({ type: 'REMOVE', key });
+    }
+  });
+
+  return moves;
+}
+
+// 新增：应用补丁到真实DOM
+function applyPatch(el: HTMLElement, patches: Patch[]) {
+  patches.forEach(patch => {
+    switch (patch.type) {
+      case 'REPLACE':
+        const newEl = createElement(patch.newNode);
+        el.parentNode?.replaceChild(newEl, el);
+        break;
+        
+      case 'UPDATE_PROPS':
+        patch.patches.forEach(propPatch => {
+          if (propPatch.op === 'set') {
+            if (propPatch.key.startsWith('on')) {
+              // 事件处理
+              const eventType = propPatch.key.slice(2).toLowerCase();
+              el.addEventListener(eventType, propPatch.value);
+            } else {
+              el.setAttribute(propPatch.key, propPatch.value);
+            }
+          } else {
+            el.removeAttribute(propPatch.key);
+          }
+        });
+        break;
+        
+      case 'REORDER':
+        const fragment = document.createDocumentFragment();
+        patch.moves.forEach(move => {
+          // 实际DOM操作需要根据key查找对应节点
+          // 这里简化处理，实际需要维护key与DOM的映射
+        });
+        el.appendChild(fragment);
+        break;
+        
+      case 'TEXT':
+        el.textContent = patch.content;
+        break;
+    }
+  });
+}
+
+// 虚拟DOM创建函数（示例）
+function createElement(vnode: VNode): HTMLElement {
+  // 实际实现需要处理组件等情况
+  const el = document.createElement(vnode.type as string);
+  // 应用props和children...
+  return el;
+}
+
+```
