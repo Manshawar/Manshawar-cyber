@@ -2,61 +2,61 @@
  * @Author: Manshawar 825750768@qq.com
  * @Date: 2025-02-24 15:13:06
  * @LastEditors: Manshawar 825750768@qq.com
- * @LastEditTime: 2025-02-24 16:58:45
+ * @LastEditTime: 2025-02-25 17:30:36
  * @FilePath: \Manshawar-cyber\packages\toJsonL\rsbuild\src\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import jsonlCore from "jsonl-core"
-import type { RsbuildPlugin } from "@rsbuild/core"
+/*
+ * @Author: Manshawar 825750768@qq.com
+ * @Date: 2025-02-24 15:13:06
+ * @LastEditors: Manshawar 825750768@qq.com
+ * @LastEditTime: 2025-02-25 17:07:36
+ * @FilePath: \Manshawar-cyber\packages\toJsonL\rsbuild\src\index.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+/*
+ * @Author: Manshawar 825750768@qq.com
+ * @Date: 2025-02-24 15:13:06
+ * @LastEditors: Manshawar 825750768@qq.com
+ * @LastEditTime: 2025-02-25 17:00:11
+ * @FilePath: \Manshawar-cyber\packages\toJsonL\rsbuild\src\index.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+// import jsonlCore from "jsonl-core";
+import type { RsbuildPlugin } from "@rsbuild/core";
+import path from "path";
 
-interface JsonlPluginOptions {
-  // 支持字符串数组或正则表达式
-  extensions?: string[] | RegExp;
-}
-
-// 默认支持的文件类型
-const DEFAULT_EXTENSIONS = [
-  '.vue',
-  '.js',
-  '.ts',
-  '.jsx',
-  '.tsx',
-  '.md',
-  '.mdx',
-];
-
-// 检查文件是否匹配
-const isFileMatch = (filePath: string, extensions: string[] | RegExp = DEFAULT_EXTENSIONS): boolean => {
-  // 排除 node_modules
-  if (filePath.includes('node_modules')) {
-    return false;
-  }
-
-  if (extensions instanceof RegExp) {
-    return extensions.test(filePath);
-  }
-  return extensions.some(ext => filePath.endsWith(ext));
-};
-
+import type { JsonlPluginOptions } from "jsonl-core";
+import { DEFAULT_EXTENSIONS, isFileMatch } from "jsonl-core";
+const loaderPath = path.resolve(__dirname, './loader.ts');
+console.log(loaderPath)
 const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
   const { extensions = DEFAULT_EXTENSIONS } = options;
 
   return {
-    name: 'jsonl-plugin',
+    name: "jsonl-plugin",
 
     setup(api) {
-      api.transform(
-        {
-          test: file => isFileMatch(file, extensions),
-        },
-        ({ code, resourcePath }) => {
-          jsonlCore(code, resourcePath)
-          console.log('File:', resourcePath);
-          return code;
-        }
-      );
+      console.log(loaderPath)
+      // api.modifyBundlerChain((chain, { CHAIN_ID }) => {
+      //   const extRegex = new RegExp(
+      //     `\\.(${DEFAULT_EXTENSIONS.map(ext => ext.slice(1)).join('|')})$`
+      //   );
+      //   chain.module
+      //     .rule("toJsonl")
+      //     .test(extRegex)
+      //     // 排除 node_modules
+      //     .exclude.add(/node_modules/)
+      //     .end()
+      //     // 添加自定义 loader
+      //     .use("toJsonl-loader")
+      //     .loader(loaderPath)
+      //     .options({ maxLength: options?.maxLength ?? 100 })
+      //     .end();
+
+      // });
     },
   };
 };
 
-export default Rsbuild
+export default Rsbuild;

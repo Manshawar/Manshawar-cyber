@@ -1,5 +1,9 @@
-function Core(code: string, resourcePath: string) {
-  console.log(resourcePath)
-}
 
-export default Core
+import { transformCode } from "./transformCode.ts"
+export * from "../types"
+export * from "../utils"
+
+
+
+export default transformCode
+

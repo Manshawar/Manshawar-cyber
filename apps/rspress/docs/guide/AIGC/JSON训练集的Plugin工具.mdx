@@ -11,3 +11,55 @@
 7. express后端接收后上传阿里云oss
 8. 使用 <a href="https://help.aliyun.com/zh/model-studio/developer-reference/model-customization-file-management-service?spm=a2c4g.11186623.help-menu-2400256.d_3_5_1.3a57b514rotTBZ&scm=20140722.H_2712476._.OR_help-T_cn~zh-V_1" target="_blank">模型调优</a>接口进行调优
 9. 在前端接入对话框 后续继承ai能力
+
+
+## 2、 ai提升需求
+
+1. 在`transform`钩子中添加方法，过滤出常见的代码文件和`md`,`mdx`，对于code进行处理 生成jsonl训练集，
+2. 不要用nodemodule里面的包
+3. 在每一个训练集开头附上相对根目录的文件路径
+4. 训练集分`react`和`vue`,以及`js`和`ts`，生成相关jsonl训练集
+5. 在`transform`钩子中添加方法，过滤出常见的代码文件和`md`,`mdx`，进行切分操作，对于code进行处理 生成jsonl训练集，
+6. 需要制作缓存 
+7. 通过流的形式传输 等所有文件遍历完成后再写成一个jsonl训练集
+8. 如何处理
+
+```ts
+   messages: [
+        {
+          role: 'system',
+          content: '你是一个代码文档助手，回答必须基于提供的代码库内容'
+        },
+        {
+          role: 'user',
+          content: `根据${path.basename(filePath)}的${block.name}部分，${generateQuestion(block)}`
+        },
+        {
+          role: 'assistant',
+          content: generateAnswer(block, filePath)
+        }]
+function generateQuestion(block: CodeBlock): string {
+  switch(block.type) {
+    case 'function':
+      return `请解释${block.name}函数的作用和参数`;
+    case 'component':
+      return `如何使用${block.name}组件？`;
+    case 'markdown':
+      return `总结${block.name}章节的主要内容`;
+  }
+}
+function generateAnswer(block: CodeBlock, filePath: string): string {
+  const sourceRef = `（来源：${path.basename(filePath)}#${block.name}）`;
+  
+  if (block.type === 'markdown') {
+    return `文档内容：${block.content.slice(0, 200)}... ${sourceRef}`;
+  }
+  
+  return `代码片段：
+\`\`\`${block.type === 'function' ? 'typescript' : 'jsx'}
+${block.content}
+\`\`\`
+${block.comments.join('\n')} ${sourceRef}`;
+}
+```
+
