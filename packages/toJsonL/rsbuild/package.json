@@ -2,7 +2,6 @@
   "name": "jsonl/rspress",
   "version": "1.0.0",
   "description": "",
-
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,6 +24,7 @@
   "license": "ISC",
   "devDependencies": {
     "@rsbuild/core": "1.1.14",
+    "@types/node": "22.13.5",
     "jsonl-core": "workspace:^",
     "tsup": "8.3.6"
   }

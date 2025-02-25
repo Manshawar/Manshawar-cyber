@@ -8,13 +8,17 @@
  */
 import { defineConfig } from 'tsup'
 
-export default defineConfig({
-  entryPoints: [
-    'src/index.ts',
-  ],
- 
-  // clean: true,
-  format: ['esm', 'cjs'],
-  dts: true,
-  shims: true,
-})
+export default defineConfig([
+  {
+    entryPoints: [
+      'src/index.ts',
+  'src/loader.ts',
+    ],
+   
+    // clean: true,
+    format: ['esm', 'cjs'],
+    dts: true,
+    shims: true,
+  }, 
+]
+)

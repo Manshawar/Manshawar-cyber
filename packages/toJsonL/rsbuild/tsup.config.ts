@@ -11,7 +11,7 @@ import { defineConfig } from 'tsup'
 export default defineConfig({
   entryPoints: [
     'src/index.mts',
-    'src/loader.ts'
+
   ],
 
   // clean: true,

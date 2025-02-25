@@ -3,16 +3,11 @@ import type { RsbuildPlugin } from "@rsbuild/core";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-
+import { createRequire } from 'module';
 import type { JsonlPluginOptions } from "jsonl-core";
 import { DEFAULT_EXTENSIONS, isFileMatch } from "jsonl-core";
-const loaderPath = path.resolve(__dirname, './loader.js');
-
-// 获取当前文件的路径
-
-
-
-console.log('当前目录:', loaderPath);
+const require = createRequire(import.meta.url);
+const loaderPath = require.resolve( 'jsonl-core/loader');
 
 const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
   const { extensions = DEFAULT_EXTENSIONS } = options;
@@ -21,7 +16,7 @@ const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
     name: "jsonl-plugin",
 
     setup(api) {
-      console.log(loaderPath)
+     
       api.modifyBundlerChain((chain, { CHAIN_ID }) => {
         const extRegex = new RegExp(
           `\\.(${DEFAULT_EXTENSIONS.map(ext => ext.slice(1)).join('|')})$`
