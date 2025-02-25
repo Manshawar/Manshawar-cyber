@@ -8,7 +8,7 @@
     "build": "rspress build",
     "blog:build": "rspress build",
     "preview": "rspress preview",
-    "dev:plugin": "nodemon --watch ../../packages/toJsonL/rsbuild/* --ext js,jsx,ts,tsx,json --exec pnpm run dev"
+    "dev:plugin": "nodemon --watch ../../packages/toJsonL/rsbuild/src --watch ../../packages/toJsonL/rsbuild/dist --ext js,ts,json --ignore node_modules/ --exec 'rspress dev --port 8080'"
   },
   "dependencies": {
     "@rsbuild/core": "1.1.14",

@@ -2,7 +2,9 @@ import * as path from 'node:path';
 
 import { defineConfig } from 'rspress/config';
 import { myAttr } from "./plugins/html"
+import type { RsbuildPlugin } from "@rsbuild/core";
 import { pluginSvgr } from '@rsbuild/plugin-svgr';
+
 import PluginToJsonL from "jsonl/rspress"
 
 
@@ -15,10 +17,8 @@ export default defineConfig({
     svgrOptions: {
       exportType: 'default',
     },
-  }), PluginToJsonL()],
+  }) as any,PluginToJsonL()],
   builderConfig: {
-
-    //@ts-ignore
     resolve: {
       alias: {
         '@com': './src/components/',

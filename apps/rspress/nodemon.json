@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "../../packages/toJsonL/rsbuild/src",
+    "../../packages/toJsonL/rsbuild/dist"
+  ],
+  "ext": "js,ts,json",
+  "ignore": [
+    "node_modules/*",
+    ".git",
+    "dist"
+  ],
+  "delay": "1000",
+  "verbose": true,
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  }
+} 

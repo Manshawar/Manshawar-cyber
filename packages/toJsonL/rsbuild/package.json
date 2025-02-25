@@ -2,7 +2,7 @@
   "name": "jsonl/rspress",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,7 +11,7 @@
     "dev": "tsx ./src/index.ts",
     "build": "tsup --clean",
     "prepare:type": "tsup --dts-only",
-    "stub": "tsup --watch --watch --outDir dist --watch ../core/dist"
+    "stub": "tsup --watch \"src/**/*.ts\" --watch \"../core/dist/**/*\" --outDir dist"
   },
   "exports": {
     ".": {

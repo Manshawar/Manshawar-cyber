@@ -1,6 +1,7 @@
 
 
 module.exports = function (content: string) {
-  console.log(content)
+  debugger
+  console.log(content,"content",this)
   return content;
 };
