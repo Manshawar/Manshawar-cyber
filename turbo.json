@@ -24,10 +24,13 @@
     "blog:build": {
       "cache": false
     },
-    "dev:plugin": {
+    "stub": {
       "cache": false
     },
     "ant:t": {
+      "cache": false
+    },
+    "dev:plugin": {
       "cache": false
     }
   }

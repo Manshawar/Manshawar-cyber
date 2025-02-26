@@ -1,39 +1,84 @@
-/*
- * @Author: Manshawar 825750768@qq.com
- * @Date: 2025-02-25 13:39:46
- * @LastEditors: Manshawar 825750768@qq.com
- * @LastEditTime: 2025-02-25 15:29:20
- * @FilePath: \Manshawar-cyber\packages\toJsonL\core\src\transformCode.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-import path from "path"
-export function transformCode({ code, resourcePath, root }: { code: string, resourcePath: string, root: string }) {
-
-  let relativePath = path.relative(root, resourcePath);
-  let extension = path.extname(resourcePath).slice(1);
-  console.log(extension)
-
+import fs from "fs-extra"
+import path from 'path';
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+// 类型定义
+interface TrainingData {
+  messages: {
+    role: 'system' | 'user' | 'assistant';
+    content: string;
+  }[];
 }
 
-
-function buildSystemMessage(framework: string) {
-  return `你是一个${framework.toUpperCase()}专家，回答需严格遵循项目规范`;
+interface CodeStructure {
+  components: string[];
+  props: string[];
+  methods: string[];
+  variables: string[];
+  filePath: string;
 }
 
-function generateQuestion(block: any, filename: string) {
-  const questions = {
-    component: `请解释${filename}中${block.name}组件的作用`,
-    markdown: `总结${filename}中"${block.name}"章节内容`,
-    function: `说明${block.name}函数的功能和参数`
-  };
-  return questions[block.type as keyof typeof questions] || '请解释以下代码';
-}
+abstract class FileProcessor {
+  abstract extensions: string[];
+  
+  async processDirectory(dirPath: string): Promise<TrainingData[]> {
+    const files = await this.getFiles(dirPath);
+    return Promise.all(files.map(file => this.processFile(file)));
+  }
 
-function generateAnswer(block: any, filepath: string) {
-  const codePrefix = block.type === 'markdown' ? '文档内容' : '代码实现';
-  return `${codePrefix}：
-\`\`\`${block.type === 'markdown' ? 'markdown' : 'typescript'}
-${block.content.slice(0, 200)}
-\`\`\`
-—— 来源：${filepath}#${block.name}`;
+  private async getFiles(dirPath: string): Promise<string[]> {
+    const entries = await fs.readdir(dirPath, { withFileTypes: true });
+    const files = await Promise.all(entries.map(entry => {
+      const fullPath = path.join(dirPath, entry.name);
+      return entry.isDirectory() ? this.getFiles(fullPath) : fullPath;
+    }));
+    return files.flat().filter(file => 
+      this.extensions.some(ext => file.endsWith(ext))
+    );
+  }
+
+  protected abstract parseCode(content: string): CodeStructure;
+
+  protected generateExplanation(structure: CodeStructure): string {
+    const { components, props, methods, variables } = structure;
+    const parts: string[] = [];
+    
+    if (components.length > 0) {
+      parts.push(`包含以下组件：${components.join(', ')}`);
+    }
+    if (props.length > 0) {
+      parts.push(`定义了属性：${props.join(', ')}`);
+    }
+    if (methods.length > 0) {
+      parts.push(`包含方法：${methods.join(', ')}`);
+    }
+    if (variables.length > 0) {
+      parts.push(`声明了变量：${variables.join(', ')}`);
+    }
+
+    return `该React组件${parts.join('，')}。文件位置：${structure.filePath}`;
+  }
+
+  private async processFile(filePath: string): Promise<TrainingData> {
+    const content = await fs.readFile(filePath, 'utf-8');
+    const structure = this.parseCode(content);
+    structure.filePath = path.relative(process.cwd(), filePath);
+
+    return {
+      messages: [
+        {
+          role: 'system',
+          content: '你是一个资深React开发者，需要解释项目中的组件结构'
+        },
+        {
+          role: 'user',
+          content: `请解释 ${path.basename(filePath)} 文件中的React组件结构`
+        },
+        {
+          role: 'assistant',
+          content: this.generateExplanation(structure)
+        }
+      ]
+    };
+  }
 }

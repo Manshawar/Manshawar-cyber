@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import { createRequire } from 'module';
 import type { JsonlPluginOptions } from "jsonl-core";
 import { DEFAULT_EXTENSIONS, isFileMatch } from "jsonl-core";
+import { SourceMapPlugin } from 'jsonl/rspack';
 const require = createRequire(import.meta.url);
 const loaderPath = require.resolve( 'jsonl-core/loader');
 
@@ -15,8 +16,7 @@ const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
   return {
     name: "jsonl-plugin",
 
-    setup(api) {
-     
+    setup(api) { 
       api.modifyBundlerChain((chain, { CHAIN_ID }) => {
         const extRegex = new RegExp(
           `\\.(${DEFAULT_EXTENSIONS.map(ext => ext.slice(1)).join('|')})$`
@@ -34,6 +34,16 @@ const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
           .end();
 
       });
+      const sourceMapPlugin = new SourceMapPlugin();
+     
+      api.modifyRspackConfig((config) => {
+        // 将 Rspack 插件添加到配置中
+        config.plugins ||= [];
+        config.plugins.push(sourceMapPlugin);
+        // console.log(config.plugins)
+        return config;
+      });
+      
     },
   };
 };
