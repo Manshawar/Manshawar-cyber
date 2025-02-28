@@ -5,7 +5,7 @@ import { myAttr } from "./plugins/html"
 import type { RsbuildPlugin } from "@rsbuild/core";
 import { pluginSvgr } from '@rsbuild/plugin-svgr';
 
-import PluginToJsonL from "jsonl/rspress"
+import jsonlPlugin from "rspress-md-tojsonl"
 
 
 
@@ -17,7 +17,7 @@ export default defineConfig({
     svgrOptions: {
       exportType: 'default',
     },
-  }) as any,PluginToJsonL()],
+  }) as any,],
   builderConfig: {
     resolve: {
       alias: {
@@ -70,7 +70,7 @@ export default defineConfig({
 
 
   plugins: [
-
+    jsonlPlugin() as any,
     {
       name: "svgPlugin",
       globalUIComponents: [
@@ -91,7 +91,7 @@ export default defineConfig({
         ],
       ],
     },
-
+    
   ],
 
   themeConfig: {
