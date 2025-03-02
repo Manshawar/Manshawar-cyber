@@ -1,9 +1,11 @@
 import Closure from './js/closure.tsx';
 
+
+
 # js
 
 ## 闭包
-
+<Closure />
 ECMAScript中，闭包指的是：
 
 1. 从理论角度：所有的函数。因为它们都在创建的时候就将上层上下文的数据保存起来了。哪怕是简单的全局变量也是如此，因为函数中访问全局变量就相当于是在访问自由变量，这个时候使用最外层的作用域。
@@ -42,4 +44,170 @@ data[2]();
 ```
 
 
-<Closure />
+
+## 变量
+
+当 JavaScript 代码执行一段可执行代码(executable code)时，会创建对应的执行上下文(execution context)。
+
+对于每个执行上下文，都有三个重要属性：
+
+* 变量对象(Variable object，VO)
+* 作用域链(Scope chain)
+* this
+
+> 全局对象是预定义的对象，作为 JavaScript 的全局函数和全局属性的占位符。通过使用全局对象，可以访问所有其他所有预定义的对象、函数和属性。
+
+> 在顶层 JavaScript 代码中，可以用关键字 this 引用全局对象。因为全局对象是作用域链的头，这意味着所有非限定性的变量和函数名都会作为该对象的属性来查询。
+
+> 例如，当JavaScript 代码引用 parseInt() 函数时，它引用的是全局对象的 parseInt 属性。全局对象是作用域链的头，还意味着在顶层 JavaScript 代码中声明的所有变量都将成为全局对象的属性。
+
+### 函数上下文
+在函数上下文中，我们用活动对象(activation object, AO)来表示变量对象。
+
+活动对象和变量对象其实是一个东西，只是变量对象是规范上的或者说是引擎实现上的，不可在 JavaScript 环境中访问，只有到当进入一个执行上下文中，这个执行上下文的变量对象才会被激活，所以才叫 activation object 呐，而只有被激活的变量对象，也就是活动对象上的各种属性才能被访问。
+
+活动对象是在进入函数上下文时刻被创建的，它通过函数的 arguments 属性初始化。arguments 属性值是 Arguments 对象。
+
+### 执行上下文
+执行上下文的代码会分成两个阶段进行处理：分析和执行，我们也可以叫做：
+
+1. 进入执行上下文
+2. 代码执行
+
+### 进入执行上下文
+当进入执行上下文时，这时候还没有执行代码，
+
+变量对象会包括：
+
+1. 函数的所有形参 (如果是函数上下文)
+
+   * 由名称和对应值组成的一个变量对象的属性被创建
+   * 没有实参，属性值设为 undefined
+2. 函数声明
+
+   * 由名称和对应值（函数对象(function-object)）组成一个变量对象的属性被创建
+   * 如果变量对象已经存在相同名称的属性，则完全替换这个属性
+3. 变量声明
+
+   * 由名称和对应值（undefined）组成一个变量对象的属性被创建；
+   * 如果变量名称跟已经声明的形式参数或函数相同，则变量声明不会干扰已经存在的这类属性
+ ###  代码执行
+ 在代码执行阶段，会顺序执行代码，根据代码，修改变量对象的值
+
+
+* 全局上下文的变量对象初始化是全局对象
+* 函数上下文的变量对象初始化只包括 Arguments 对象
+* 在进入执行上下文时会给变量对象添加形参、函数声明、变量声明等初始的属性值
+* 在代码执行阶段，会再次修改变量对象的属性值
+
+## 创建对象
+
+1. 工厂模式
+
+```js
+function createPerson(name) {
+    var o = new Object();
+    o.name = name;
+    o.getName = function () {
+        console.log(this.name);
+    };
+
+    return o;
+}
+
+var person1 = createPerson('kevin');
+
+```
+缺点：对象无法识别，因为所有的实例都指向一个原型
+
+2. 构造函数模式
+
+```js
+function Person(name) {
+    this.name = name;
+    this.getName = function () {
+        console.log(this.name);
+    };
+}
+
+var person1 = new Person('kevin');
+```
+优点：实例可以识别为一个特定的类型
+
+缺点：每次创建实例时，每个方法都要被创建一次
+
+3. 原型模式
+
+```js
+function Person(name) {
+
+}
+
+Person.prototype = {
+    constructor: Person,
+    name: 'kevin',
+    getName: function () {
+        console.log(this.name);
+    }
+};
+
+var person1 = new Person();
+```
+优点：实例可以通过constructor属性找到所属构造函数
+
+缺点：原型模式该有的缺点还是有
+
+4. 组合模式
+
+```js
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype = {
+    constructor: Person,
+    getName: function () {
+        console.log(this.name);
+    }
+};
+
+var person1 = new Person();
+```
+优点：该共享的共享，该私有的私有，使用最广泛的方式
+
+缺点：有的人就是希望全部都写在一起，即更好的封装性
+
+5.  *动态原型模式*
+
+```js
+function Person(name) {
+    this.name = name;
+    if (typeof this.getName != "function") {
+        Person.prototype.getName = function () {
+            console.log(this.name);
+        }
+    }
+}
+
+var person1 = new Person();
+```
+
+当第一个实例化的时候 他没有getName方法，所以会去原型上找，然后添加到原型上，当第二个实例化的时候，他有getName方法，所以不会去原型上找，直接使用自己的方法
+
+```js
+var person1 = new Person('kevin');
+var person2 = new Person('daisy');
+
+// 报错 并没有该方法
+person1.getName();
+
+// 注释掉上面的代码，这句是可以执行的。
+person2.getName();
+```
+第一个正是因为找不到才进入if进行创建 我们的this也是第一个this，这正是问题的由来
+
+*new的实现步骤*
+* 首先新建一个对象
+* 然后将对象的原型指向 Person.prototype
+* 然后 Person.apply(obj)
+* 返回这个对象

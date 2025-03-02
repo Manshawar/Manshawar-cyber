@@ -1,3 +1,15 @@
+import { register } from 'vue-comp';
+import { useEffect } from 'react';
+
+
 export default function Closure() {
-  return <div>Closure</div>;
+  useEffect(() => {
+
+    register()
+  }, [])
+
+  return <div>
+    <div>Closure</div>
+    <v-test></v-test>
+  </div>;
 }

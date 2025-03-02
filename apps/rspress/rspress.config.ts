@@ -13,7 +13,7 @@ export default defineConfig({
   root: path.join(__dirname, 'docs'),
   title: 'Manshawar blog',
   icon: '/rspress-icon.png',
-  builderPlugins: [pluginSvgr({
+  builderPlugins: [,pluginSvgr({
     svgrOptions: {
       exportType: 'default',
     },

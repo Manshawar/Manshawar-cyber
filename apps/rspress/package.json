@@ -17,7 +17,8 @@
     "pixi-live2d-display": "0.4.0",
     "pixi.js": "8.7.3",
     "rspress": "^1.37.0",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+    "vue-comp": "workspace:*"
   },
   "devDependencies": {
     "@rsbuild/plugin-svgr": "1.0.7",

@@ -11,6 +11,21 @@ declare global {
   interface Window {
     PIXI: typeof PIXI;
   }
+  interface IntrinsicElements {
+    // 通配符匹配所有 v- 前缀的标签
+    [tagName: `v-${string}`]: {
+      // 基础 HTML 属性
+      class?: string
+      style?: string | Record<string, string>
+      id?: string
+      ref?: Ref | string
+      // 通用事件
+      onClick?: (event: MouseEvent) => void
+      onInput?: (event: Event) => void
+      // 动态自定义属性
+      [key: string]: any
+    }
+  }
 }
 
 

@@ -15,15 +15,15 @@
     "paths": {
       "@com/*": ["./src/components/*"],
       "@page/*": ["./src/page/*"],
-      "@/*": ["src/*"],
-      "*": ["./types/*"],
-      "@guide/*": ["docs/guide/*"]
+      "@/*": ["./src/*"],
+      "*": ["./types/*"]
     },
-    "typeRoots": ["./types", "./node_modules/@types"],
+    "types": [],
+    "typeRoots": ["./types", "./node_modules/@types", ],
     "baseUrl": ".",
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
-  "include": ["src/**/*", "types/**/*.d.ts", "theme/**/*", "docs/**/*.mdx", "docs/**/*.tsx"],
+  "include": ["src/**/*", "types/**/*.d.ts", "theme/**/*", "docs/**/*.mdx", "docs/**/*.tsx", "./node_modules/vue-comp/dist/types"],
   "mdx": {
     "checkMdx": true
   }
