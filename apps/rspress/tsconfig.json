@@ -15,8 +15,9 @@
     "paths": {
       "@com/*": ["./src/components/*"],
       "@page/*": ["./src/page/*"],
-      "@/*": ["./src/*"],
-      "*": ["./types/*"]
+      "@/*": ["src/*"],
+      "*": ["./types/*"],
+      "@guide/*": ["docs/guide/*"]
     },
     "typeRoots": ["./types", "./node_modules/@types"],
     "baseUrl": ".",

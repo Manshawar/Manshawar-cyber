@@ -1,10 +1,11 @@
 {
-  "name": "@jsonl/rspack",
+  "name": "rspress-md-tojsonl",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx ./src/index.ts",
@@ -23,8 +24,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@rsbuild/core": "1.1.14",
-    "@rspack/core": "1.2.6",
+    "@jsonl/rsbuild": "workspace:^",
+    "@rspress/shared": "1.42.1",
     "@types/node": "22.13.5",
     "jsonl-core": "workspace:^",
     "tsup": "8.3.6"

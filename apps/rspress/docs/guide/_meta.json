@@ -18,7 +18,14 @@
   {
     "type": "dir",
     "name": "AIGC",
-    "label": "AIGC"
+    "label": "AIGC",
+    "collapsible": "true",
+    "collapsed": "true"
+  },
+  {
+    "type": "dir",
+    "name": "朝花夕拾",
+    "label": "朝花夕拾"
   },
   {
     "type": "dir",
@@ -35,13 +42,16 @@
   {
     "type": "dir",
     "name": "vr",
-    "label": "可视化"
+    "label": "可视化",
+    "collapsible": "true",
+    "collapsed": "true"
   },
   {
     "type": "dir",
     "name": "rust",
     "label": "rust狗都不用",
-    "collapsible": "true"
+    "collapsible": "true",
+    "collapsed": "true"
   },
   {
     "type": "divider"
@@ -51,6 +61,7 @@
     "name": "vue",
     "label": "vue在线讨口子",
     "collapsible": "true",
+    "collapsed": "true",
     "overviewHeaders": [
       2
     ]
@@ -62,7 +73,8 @@
     "type": "dir",
     "name": "js",
     "label": "js拿去通马桶真是个好东西",
-    "collapsible": "true"
+    "collapsible": "true",
+    "collapsed": "true"
   },
   {
     "type": "divider"
@@ -71,7 +83,8 @@
     "type": "dir",
     "name": "electron",
     "label": "electron让你的pc成为垃圾站",
-    "collapsible": "true"
+    "collapsible": "true",
+    "collapsed": "true"
   },
   {
     "type": "divider"
@@ -80,16 +93,21 @@
     "type": "dir",
     "name": "css",
     "label": "css切图仔来啦",
-    "collapsible": "true"
+    "collapsible": "true",
+    "collapsed": "true"
   },
   {
     "type": "section-header",
-    "label": "会server的能去贴膜了"
+    "label": "会server的能去贴膜了",
+    "collapsible": "true",
+    "collapsed": "true"
   },
   {
     "type": "dir",
     "name": "日常笔记",
-    "label": "日常笔记"
+    "label": "日常笔记",
+    "collapsible": "true",
+    "collapsed": "true"
   },
   "serve/sql/sql.md"
 ]

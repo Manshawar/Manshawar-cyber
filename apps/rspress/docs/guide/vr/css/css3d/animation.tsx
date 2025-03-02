@@ -1,3 +1,4 @@
+import React from "react";
 import styles, { keyframes, css } from "styled-components";
 export default () => {
   let a1 = (props: { i: number }) => {

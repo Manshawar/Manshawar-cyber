@@ -1,10 +1,5 @@
 // 默认支持的文件类型
 export const DEFAULT_EXTENSIONS = [
-  '.vue',
-  '.js',
-  '.ts',
-  '.jsx',
-  '.tsx',
   '.md',
   '.mdx',
 ];

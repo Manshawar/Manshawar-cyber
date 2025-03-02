@@ -24,6 +24,7 @@ export default defineConfig({
         '@com': './src/components/',
         '@page': './src/page/',
         '@': './src/',
+        '@guide': './docs/guide/',
       },
     },
     html: {
@@ -70,7 +71,7 @@ export default defineConfig({
 
 
   plugins: [
-    jsonlPlugin() as any,
+    // jsonlPlugin() as any,
     {
       name: "svgPlugin",
       globalUIComponents: [

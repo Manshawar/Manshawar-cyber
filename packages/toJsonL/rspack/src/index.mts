@@ -1,5 +1,6 @@
 import type { Compiler, Compilation } from '@rspack/core';
-
+import transformCode from 'jsonl-core'
+import path from "path"
 export class SourceMapPlugin {
   // 用于存储插件间共享的数据
   public sourceCodeMap?: Map<string, string>;
@@ -15,7 +16,9 @@ export class SourceMapPlugin {
         this.sourceCodeMap = (compilation as any).__sourceCodeMap;
   
         if(this.sourceCodeMap){
-          console.log(this.sourceCodeMap.size)
+         let res = transformCode.transformMarkdownMap(this.sourceCodeMap)
+         transformCode.writeJsonLines(res, path.join(process.cwd(), 'md.jsonl'))
+
         }
       });
     });

@@ -1,17 +1,15 @@
 // import jsonlCore from "jsonl-core";
 import type { RsbuildPlugin } from "@rsbuild/core";
-import path from "path";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+
 import { createRequire } from 'module';
-import type { JsonlPluginOptions } from "jsonl-core";
+
 import { DEFAULT_EXTENSIONS, isFileMatch } from "jsonl-core";
-import { SourceMapPlugin } from 'jsonl/rspack';
+import { SourceMapPlugin } from '@jsonl/rspack';
 const require = createRequire(import.meta.url);
 const loaderPath = require.resolve( 'jsonl-core/loader');
 
-const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
-  const { extensions = DEFAULT_EXTENSIONS } = options;
+const Rsbuild = (): RsbuildPlugin => {
+
 
   return {
     name: "jsonl-plugin",
@@ -23,15 +21,14 @@ const Rsbuild = (options: JsonlPluginOptions = {}): RsbuildPlugin => {
         );
         chain.module
           .rule("toJsonl")
+          .pre()
           .test(extRegex)
           // 排除 node_modules
           .exclude.add(/node_modules/)
           .end()
           // 添加自定义 loader
           .use("toJsonl-loader")
-          .loader(loaderPath)
-          .options({ maxLength: options?.maxLength ?? 100 })
-          .end();
+          .loader(loaderPath).end();
 
       });
       const sourceMapPlugin = new SourceMapPlugin();

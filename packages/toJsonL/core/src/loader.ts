@@ -14,7 +14,6 @@ export default function loader(
 ) {
   // ...
   const filePath = this.resourcePath;
-  debugger
 
   let relativePath = path.relative(this.rootContext, filePath)
   // 获取 compilation 对象（Rspack 的编译上下文）
@@ -27,6 +26,6 @@ export default function loader(
   
   // 存储源代码（使用路径作为 key）
   compilation.__sourceCodeMap.set(relativePath, content);
-  console.log(compilation.__sourceCodeMap)
+
   return content
 }
