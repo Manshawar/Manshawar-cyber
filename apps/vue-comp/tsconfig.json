@@ -11,7 +11,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["vite/client","./src/types/types.d.ts"]
+    "types": ["vite/client"]
   },
 
   "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts"],
