@@ -9,15 +9,15 @@
 import React, { useEffect } from "react";
 import { loadOml2d, Oml2dMethods } from "oh-my-live2d";
 import Theme from "rspress/theme";
-import { register } from "vue-comp";
+
 import { useLocation } from "rspress/runtime";
 import("./styles/index.css").then(() => {
   console.log("Styles loaded");
 
 });
-import("vue-comp").then((res) => {
-  register();
-});
+import("vue-comp").then((res:any) => {
+    res.register();
+  });
 // 单例模式管理 live2d 实例
 const Live2DManager = {
   instance: null as Oml2dMethods | null,
