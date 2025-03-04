@@ -1,11 +1,8 @@
-import Closure from './js/closure.tsx';
-
 
 
 # js
 
 ## 闭包
-<Closure />
 ECMAScript中，闭包指的是：
 
 1. 从理论角度：所有的函数。因为它们都在创建的时候就将上层上下文的数据保存起来了。哪怕是简单的全局变量也是如此，因为函数中访问全局变量就相当于是在访问自由变量，这个时候使用最外层的作用域。
@@ -211,3 +208,382 @@ person2.getName();
 * 然后将对象的原型指向 Person.prototype
 * 然后 Person.apply(obj)
 * 返回这个对象
+
+如何解决？
+```js
+function Person(name) {
+    this.name = name;
+    if (typeof this.getName != "function") {
+        Person.prototype = {
+            constructor: Person,
+            getName: function () {
+                console.log(this.name);
+            }
+        }
+
+        return new Person(name);
+    }
+}
+
+```
+我们返回一个新对象，这个新对象的constructor是Person，然后我们再调用Person的构造函数，这样我们就可以避免重复创建方法
+
+### 稳妥构造函数模式
+```js
+function person(name){
+    var o = new Object();
+    o.sayName = function(){
+        console.log(name);
+    };
+    return o;
+}
+
+var person1 = person('kevin');
+
+person1.sayName(); // kevin
+
+person1.name = "daisy";
+
+person1.sayName(); // kevin
+
+console.log(person1.name); // daisy
+```
+所谓稳妥对象，指的是没有公共属性，而且其方法也不引用 this 的对象。
+
+与寄生构造函数模式有两点不同：
+
+1. 新创建的实例方法不引用 this
+2. 不使用 new 操作符调用构造函数
+
+## JavaScript深入之词法作用域和动态作用域
+
+## 作用域
+
+作用域是指程序源代码中定义变量的区域。
+
+作用域规定了如何查找变量，也就是确定当前执行代码对变量的访问权限。
+
+JavaScript 采用词法作用域(lexical scoping)，也就是静态作用域。
+
+## 静态作用域与动态作用域
+因为 JavaScript 采用的是词法作用域，函数的作用域在函数定义的时候就决定了。
+
+而与词法作用域相对的是动态作用域，函数的作用域是在函数调用的时候才决定的。
+
+让我们认真看个例子就能明白之间的区别：
+
+```js
+var value = 1;
+
+function foo() {
+    console.log(value);//1
+}
+
+function bar() {
+    var value = 2;
+    foo();
+}
+
+bar();
+
+```
+
+
+#### 思考
+有何异同
+
+```js
+
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f();
+}
+checkscope();//"local scope"
+
+
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+checkscope()();//"local scope"
+```
+
+## 执行上下文
+
+函数的变量提升
+```js
+function foo() {
+
+    console.log('foo1');
+
+}
+
+foo();  // foo2
+
+function foo() {
+
+    console.log('foo2');
+
+}
+
+foo(); // foo2
+```
+
+## 可执行代码
+可执行代码(executable code)的类型
+
+    1. 全局代码
+    2. 函数代码
+    3. eval代码
+### 执行上下文栈
+
+JavaScript 引擎创建了执行上下文栈（Execution context stack，ECS）来管理执行上下文
+模拟执行上下文栈的行为，让我们定义执行上下文栈是一个数组：
+```js
+var ECStack = [];
+```
+
+试想当 JavaScript 开始要解释执行代码的时候，最先遇到的就是全局代码，所以初始化的时候首先就会向执行上下文栈压入一个全局执行上下文，我们用 globalContext 表示它，并且只有当整个应用程序结束的时候，ECStack 才会被清空，所以 ECStack 最底部永远有个 globalContext：
+
+```js
+
+ECStack = [
+    globalContext
+];
+```
+
+```js
+function fun3() {
+    console.log('fun3')
+}
+
+function fun2() {
+    fun3();
+}
+
+function fun1() {
+    fun2();
+}
+
+fun1();
+```
+我们来看看是如何压进栈里的
+
+```js
+// 伪代码
+
+// fun1()
+ECStack.push(<fun1> functionContext);
+
+// fun1中竟然调用了fun2，还要创建fun2的执行上下文
+ECStack.push(<fun2> functionContext);
+
+// 擦，fun2还调用了fun3！
+ECStack.push(<fun3> functionContext);
+
+// fun3执行完毕
+ECStack.pop();
+
+// fun2执行完毕
+ECStack.pop();
+
+// fun1执行完毕
+ECStack.pop();
+
+// javascript接着执行下面的代码，但是ECStack底层永远有个globalContext
+```
+
+#### 思考结果
+
+实际上是执行栈的不同
+
+```js
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f();
+}
+checkscope();
+
+//模拟执行栈
+ECStack.push(<checkscope> functionContext);
+ECStack.push(<f> functionContext);
+ECStack.pop();
+ECStack.pop();
+
+```
+
+```js
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+checkscope()();
+
+//模拟执行栈
+ECStack.push(<checkscope> functionContext);
+ECStack.pop();
+ECStack.push(<f> functionContext);
+ECStack.pop();
+
+```
+
+## 作用域链
+
+当查找变量的时候，会先从当前上下文的变量对象中查找，如果没有找到，就会从父级(词法层面上的父级)执行上下文的变量对象中查找，一直找到全局上下文的变量对象，也就是全局对象。这样由多个执行上下文的变量对象构成的链表就叫做作用域链。
+
+### 函数创建
+函数的作用域在函数定义的时候就决定了。
+
+这是因为函数有一个内部属性 [[scope]]，当函数创建的时候，就会保存所有父变量对象到其中，你可以理解 [[scope]] 就是所有父变量对象的层级链，但是注意：[[scope]] 并不代表完整的作用域链！
+
+```js
+
+ 
+function foo() {
+    function bar() {
+        ...
+    }
+}
+
+
+foo.[[scope]] = [
+  globalContext.VO
+];
+
+bar.[[scope]] = [
+    fooContext.AO,
+    globalContext.VO
+];
+
+```
+
+函数的执行上下文就是如此生成的
+
+### 函数激活
+
+当函数激活时，进入函数上下文，创建 VO/AO 后，就会将活动对象添加到作用链的前端。
+
+我们命名为 Scope
+
+```js
+var scope = "global scope";
+function checkscope(){
+    var scope2 = 'local scope';
+    return scope2;
+}
+checkscope();
+```
+我们来分析流程
+
+1. checkscope 函数被创建，保存作用域链到 内部属性[[scope]]
+```js
+
+checkscope.[[scope]] = [
+    globalContext.VO
+];
+
+```
+
+2. 执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 函数执行上下文被压入执行上下文栈
+
+```js
+ECStack = [
+    checkscopeContext,
+    globalContext
+];
+```
+3. checkscope 函数并不立刻执行，开始做准备工作，第一步：复制函数[[scope]]属性创建作用域链
+
+```js
+checkscopeContext = {
+    Scope: checkscope.[[scope]],
+}
+```
+4. 第二步：用 arguments 创建活动对象，随后初始化活动对象，加入形参、函数声明、变量声明
+
+```js
+checkscopeContext = {
+    AO: {
+        arguments: {
+            length: 0
+        },
+        scope2: undefined
+    }
+}
+```
+
+5.  第三步：将活动对象压入 checkscope 作用域链顶端
+```js
+checkscopeContext = {
+    AO: {
+        arguments: {
+            length: 0
+        },
+        scope2: undefined
+    },
+    Scope: [AO, [[Scope]]]
+}
+```
+6. 准备工作做完，开始执行函数，随着函数的执行，修改 AO 的属性值
+```js
+checkscopeContext = {
+    AO: {
+        arguments: {
+            length: 0
+        },
+        scope2: 'local scope'
+    },
+    Scope: [AO, [[Scope]]]
+}
+```
+7. 查找到 scope2 的值，返回后函数执行完毕，函数上下文从执行上下文栈中弹出
+
+```js
+ECStack = [
+    globalContext
+];
+```
+
+1. 创建函数,保存作用域链到内部属性[[scope]]
+
+2. 执行函数 创建执行上下文 压入上下文栈
+
+3. 复制函数[[scope]]属性创建作用域链
+
+4. 用 arguments 创建活动对象，随后初始化活动对象，加入形参、函数声明、变量声明
+
+5. 将活动对象压入 checkscope 作用域链顶端
+
+6. 准备工作做完，开始执行函数，随着函数的执行，修改 AO 的属性值
+
+7. 查找到 scope2 的值，返回后函数执行完毕，函数上下文从执行上下文栈中弹出
+
+
+## 从ECMAScript规范解读this
+
+```js
+var foo = 1;
+
+// 对应的Reference是：
+var fooReference = {
+    base: EnvironmentRecord,
+    name: 'foo',
+    strict: false
+};
+```

@@ -61,7 +61,12 @@ export default defineConfig({
         }
       }
     },
-
+tools:{
+  rspack: async (config) => {
+    const MonacoWebpackPlugin= require('monaco-editor-webpack-plugin');
+    config.plugins?.push(new MonacoWebpackPlugin())
+  },
+}
   },
 
   logo: {
