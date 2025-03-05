@@ -256,5 +256,5 @@ export default function Monaco({
 }
 export function formatCode(fn:Function){
   let fnName = fn.name;
-  return   fn+"\n"+fnName+"()"
+  return   fn.toString()+"\n"+fnName+"()"
 }
