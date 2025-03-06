@@ -22,15 +22,15 @@
       "cache": false
     },
     "blog:build": {
-      "dependsOn": [
-        "vue-comp#build",
-        "jsonl-core#build",
-        "@jsonl/rspack#build",
-        "@jsonl/rsbuild#build",
+      // "dependsOn": [
+      //   "vue-comp#build",
+      //   "jsonl-core#build",
+      //   "@jsonl/rspack#build",
+      //   "@jsonl/rsbuild#build",
      
-        "rspress-md-tojsonl#build",
-        "^build"
-      ],
+      //   "rspress-md-tojsonl#build",
+      //   "^build"
+      // ],
       "cache": false
     },
     "stub": {
