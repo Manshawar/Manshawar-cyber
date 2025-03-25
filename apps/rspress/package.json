@@ -6,7 +6,7 @@
     "dev": "rspress dev --port 8080",
     "blog": "rspress dev --port 8080",
     "build": "rspress build",
-    "blog:build": "rspress build",
+   "blog:build": "node --max-old-space-size=1024 ./node_modules/rspress build",
     "preview": "rspress preview",
     "dev:plugin": "nodemon --watch ../../packages/toJsonL/rsbuild/src --watch ../../packages/toJsonL/rsbuild/dist --ext js,ts,json --ignore node_modules/ --exec 'rspress dev --port 8080'"
   },
@@ -18,13 +18,15 @@
     "pixi-live2d-display": "0.4.0",
     "pixi.js": "8.7.3",
     "rspress": "^1.37.0",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+    "vue-comp": "workspace:*"
   },
   "devDependencies": {
     "@rsbuild/plugin-svgr": "1.0.7",
     "@types/node": "^18.11.17",
     "@types/react": "^18.3.12",
     "html-webpack-plugin": "^5.6.3",
+
     "tailwindcss": "^3.4.17",
     "typescript-plugin-css-modules": "5.1.0",
     "webpack-pwa-manifest": "^4.3.0",

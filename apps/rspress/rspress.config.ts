@@ -2,12 +2,8 @@ import * as path from 'node:path';
 
 import { defineConfig } from 'rspress/config';
 import { myAttr } from "./plugins/html"
-import type { RsbuildPlugin } from "@rsbuild/core";
+
 import { pluginSvgr } from '@rsbuild/plugin-svgr';
-
-import jsonlPlugin from "rspress-md-tojsonl"
-
-
 
 export default defineConfig({
   root: path.join(__dirname, 'docs'),
