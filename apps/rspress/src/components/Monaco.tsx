@@ -1,4 +1,4 @@
-import { Editor } from '@monaco-editor/react';
+// import { Editor } from '@monaco-editor/react';
 import { useState, useRef, useCallback ,useEffect} from 'react';
 
 interface MonacoProps {
@@ -202,7 +202,7 @@ export default function Monaco({
           </button>
         </div>
         <div className="flex-1">
-          <Editor
+          {/* <Editor
             height="100%"
             defaultValue={value}
             defaultLanguage={language}
@@ -221,7 +221,7 @@ export default function Monaco({
               wordWrap: 'on'
             }}
             {...props}
-          />
+          /> */}
         </div>
       </div>
 
