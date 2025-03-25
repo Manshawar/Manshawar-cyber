@@ -6,7 +6,7 @@
     "dev": "rspress dev --port 8080",
     "blog": "rspress dev --port 8080",
     "build": "rspress build",
-    "blog:build": "rspress build --max-old-space-size=4096",
+    "blog:build": "rspress build",
     "preview": "rspress preview",
     "dev:plugin": "nodemon --watch ../../packages/toJsonL/rsbuild/src --watch ../../packages/toJsonL/rsbuild/dist --ext js,ts,json --ignore node_modules/ --exec 'rspress dev --port 8080'"
   },
