@@ -37,13 +37,7 @@
     "name": "webComponents",
     "label": "webComponents"
   },
-  {
-    "type": "dir",
-    "name": "guid",
-    "label": "前端之路",
-    "collapsible": "true",
-    "collapsed": "true"
-  },
+
   {
     "type": "dir",
     "name": "vr",

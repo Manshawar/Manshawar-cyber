@@ -1,5 +1,5 @@
 import {useEffect,useRef} from "react"
-// import Editor, {formatCode} from '@/components/Monaco';
+import Editor, {formatCode} from '@/components/Monaco';
 export default function EventLoop(){
  
 
@@ -13,7 +13,7 @@ export default function EventLoop(){
   return (
     <div>
 
-      {/* <Editor
+      <Editor
       value={` function eventLoop(){
     new Promise((resolve,reject)=>{
       setTimeout(()=>{
@@ -28,7 +28,7 @@ export default function EventLoop(){
   }
      eventLoop()
   `}
-      /> */}
+      />
     </div>
   )
 }

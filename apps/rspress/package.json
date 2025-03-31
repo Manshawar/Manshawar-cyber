@@ -6,13 +6,15 @@
     "dev": "rspress dev --port 8080",
     "blog": "rspress dev --port 8080",
     "build": "rspress build",
-   "blog:build": "node --max-old-space-size=512 ./node_modules/rspress build",
+    "blog:build": "node --max-old-space-size=512 ./node_modules/rspress build",
     "preview": "rspress preview",
     "dev:plugin": "nodemon --watch ../../packages/toJsonL/rsbuild/src --watch ../../packages/toJsonL/rsbuild/dist --ext js,ts,json --ignore node_modules/ --exec 'rspress dev --port 8080'"
   },
   "dependencies": {
+    "@monaco-editor/react": "4.7.0",
     "@rsbuild/core": "1.1.14",
     "antd": "^5.23.1",
+    "monaco-editor": "0.52.2",
     "monaco-editor-webpack-plugin": "7.1.0",
     "oh-my-live2d": "^0.19.3",
     "pixi-live2d-display": "0.4.0",
@@ -26,7 +28,6 @@
     "@types/node": "^18.11.17",
     "@types/react": "^18.3.12",
     "html-webpack-plugin": "^5.6.3",
-
     "tailwindcss": "^3.4.17",
     "typescript-plugin-css-modules": "5.1.0",
     "webpack-pwa-manifest": "^4.3.0",
